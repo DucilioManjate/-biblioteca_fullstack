@@ -1,4 +1,4 @@
 package com.example.biblioteca.usuario;
 
-public class Usuario {
+public class UsuarioDto {
 }

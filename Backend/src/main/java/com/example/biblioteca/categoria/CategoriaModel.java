@@ -1,4 +1,4 @@
 package com.example.biblioteca.categoria;
 
-public class Categoria {
+public class CategoriaModel {
 }

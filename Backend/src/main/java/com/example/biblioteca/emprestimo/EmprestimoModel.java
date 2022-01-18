@@ -1,4 +1,4 @@
 package com.example.biblioteca.emprestimo;
 
-public class Emprestimo {
+public class EmprestimoModel {
 }
