@@ -1,3 +1,10 @@
+CREATE TABLE estados(
+    id   INT AUTO_INCREMENT NOT NULL,
+    nome VARCHAR(45)       NOT NULL,
+    uf   VARCHAR(5)       NOT NULL,
+    CONSTRAINT pk_estados PRIMARY KEY (id)
+);
+
 INSERT INTO `estados` (`id`, `nome`, `uf`) VALUES
 (1, 'Acre', 'AC'),
 (2, 'Alagoas', 'AL'),

@@ -1,15 +1,16 @@
-package com.example.biblioteca.cliente.entity;
+package com.example.biblioteca.endereco.entity;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 
+
 @Entity
 @Getter
 @Setter
-@Table(name = "cidades")
-public class Cidade {
+@Table(name = "estados")
+public class Estado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -17,7 +18,6 @@ public class Cidade {
     @Column(nullable = false)
     private String nome;
 
-    @ManyToOne
-    @JoinColumn(name = "estado_id", nullable = false)
-    private Estado estado;
+    @Column(nullable = false)
+    private String uf;
 }

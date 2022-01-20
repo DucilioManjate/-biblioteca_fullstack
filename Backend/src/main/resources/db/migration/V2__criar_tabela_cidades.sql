@@ -1,3 +1,13 @@
+CREATE TABLE cidades(
+id        INT AUTO_INCREMENT NOT NULL,
+nome      VARCHAR(75)       NOT NULL,
+estado_id INT                NOT NULL,
+CONSTRAINT pk_cidades PRIMARY KEY (id)
+);
+
+ALTER TABLE cidades
+ADD CONSTRAINT FK_CIDADES_ON_ESTADO FOREIGN KEY (estado_id) REFERENCES estados (id);
+
 INSERT INTO `cidades` (`id`, `nome`, `estado_id`) VALUES
 (1, 'Afonso Cláudio', 8),
 (2, 'Água Doce do Norte', 8),

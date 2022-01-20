@@ -7,6 +7,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@Table(name = "pessoas")
 @Inheritance(strategy = InheritanceType.JOINED)
 public  abstract class Pessoa {
     @Id
@@ -25,7 +26,7 @@ public  abstract class Pessoa {
     @Column
     private String cpf;
 
-
-
-
+    public void setCpf(String cpf) {
+        this.cpf = cpf.replaceAll("\\D", "");
+    }
 }

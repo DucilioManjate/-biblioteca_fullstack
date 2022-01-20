@@ -1,12 +1,16 @@
-package com.example.biblioteca.cliente.entity;
+package com.example.biblioteca.endereco.entity;
 
+import com.example.biblioteca.cliente.entity.Cliente;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
+@Table(name = "enderecos")
 @Getter
 @Setter
 public class Endereco {
@@ -17,6 +21,8 @@ public class Endereco {
 
     private Integer numero;
     private String cep;
+
+    @Enumerated(EnumType.STRING)
     private TipoEndereco tipo;
     private String bairro;
     private String logradouro;
@@ -26,6 +32,7 @@ public class Endereco {
     @ManyToOne
     @JoinColumn(name = "cidade_id", nullable = false)
     private Cidade cidade;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id", nullable = false)

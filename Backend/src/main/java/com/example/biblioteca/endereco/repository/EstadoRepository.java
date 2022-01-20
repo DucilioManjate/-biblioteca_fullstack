@@ -1,6 +1,6 @@
-package com.example.biblioteca.cliente.repository;
+package com.example.biblioteca.endereco.repository;
 
-import com.example.biblioteca.cliente.entity.Estado;
+import com.example.biblioteca.endereco.entity.Estado;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EstadoRepository extends JpaRepository<Estado, Integer> {

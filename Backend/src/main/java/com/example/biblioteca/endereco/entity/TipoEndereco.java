@@ -1,4 +1,4 @@
-package com.example.biblioteca.cliente.entity;
+package com.example.biblioteca.endereco.entity;
 
 public enum TipoEndereco {
     RESEDENCIAL,
