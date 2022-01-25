@@ -5,9 +5,10 @@ import com.example.biblioteca.emprestimo.repository.ExemplarRepository;
 import com.example.biblioteca.exceptions.BusinessRuleException;
 import com.example.biblioteca.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +34,11 @@ public class ExemplarService {
         ex.setId((exemplar.getId()));
         return exemplarRepository.save(ex);
     }
-    public Page<Exemplar> listarExemplares(Pageable pageable)
-
-
+    public List<Exemplar> listarExemplar(){
+        return exemplarRepository.findAll();
+    }
+    public void removerExemplar(Integer id) {
+        buscarExemplarPorId(id);
+        exemplarRepository.deleteById(id);
+    }
 }

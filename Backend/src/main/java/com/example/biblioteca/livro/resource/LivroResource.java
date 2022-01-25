@@ -18,7 +18,6 @@ public class LivroResource {
 
     private final LivroService livroService;
 
-
     @PostMapping
     public ResponseEntity<Livro> criar(@RequestBody Livro livro){
         return ResponseEntity.status(HttpStatus.CREATED).body(livroService.criarLivro(livro));

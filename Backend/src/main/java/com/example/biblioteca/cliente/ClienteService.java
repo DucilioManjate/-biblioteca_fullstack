@@ -26,7 +26,7 @@ public class ClienteService{
             throw new BusinessRuleException("cliente já cadastrado");
         }
 
-        return clienteRepository.save(cliente); 
+        return clienteRepository.save(cliente);
     }
 
     public Page<Cliente> listarClientes(Pageable pageable) {
