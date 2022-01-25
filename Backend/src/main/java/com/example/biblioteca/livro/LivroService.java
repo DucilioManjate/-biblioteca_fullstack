@@ -19,23 +19,36 @@ public class LivroService {
 
     private final LivroRepository livroRepository;
     private final AreaConhecimentoRepository areaConhecimentoRepository;
-    private final AutorRepository autorRepository;
+//    private final AutorRepository autorRepository;
     private final EditoraService editoraService;
     private final CategoriaService categoriaService;
+    private final AutorService autorService;
+    private  final AreaConhecimentoService areaConhecimentoService;
 
     public Livro criarLivro(Livro livro){
+
         var editora = editoraService.consultar(livro.getEditora().getId());
         var categoria = categoriaService.consultar(livro.getCategoria().getId());
-        var autores = livro.getAutores().stream().map(autor -> autor.getId()).collect(Collectors.toList());
-        var autoresList = autorRepository.findAllById(autores);
 
-        var areaConhecimento = livro.getAreaConhecimentos().stream().map(x -> x.getId()).collect(Collectors.toList());
-        var areaConhecimentoList = areaConhecimentoRepository.findAllById(areaConhecimento);
+        var autores = livro
+                .getAutores()
+                .stream()
+                .map(autor -> autorService
+                .consultar(autor.getId()))
+                .collect(Collectors.toList());
+
+        var areaConhecimento = livro
+                .getAreaConhecimentos()
+                .stream()
+                .map(x -> areaConhecimentoService
+                .consultar(x.getId()))
+                .collect(Collectors.toList());
+//        var areaConhecimentoList = areaConhecimentoRepository.findAllById(areaConhecimento);
 
         livro.setEditora(editora);
         livro.setCategoria(categoria);
-        livro.setAutores(autoresList);
-        livro.setAreaConhecimentos(areaConhecimentoList);
+        livro.setAutores(autores);
+        livro.setAreaConhecimentos(areaConhecimento);
 
         return livroRepository.save(livro);
 

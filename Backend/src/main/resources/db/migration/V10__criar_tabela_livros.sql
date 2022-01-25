@@ -1,6 +1,6 @@
 CREATE TABLE livros
 (
-    id           INT          NOT NULL,
+    id           INT          NOT NULL AUTO_INCREMENT,
     titulo       VARCHAR(255) NULL,
     resumo       TEXT         NULL,
     ano          INT          NULL,

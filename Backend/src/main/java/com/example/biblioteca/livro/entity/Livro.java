@@ -16,6 +16,7 @@ import java.util.List;
 public class Livro {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String titulo;
