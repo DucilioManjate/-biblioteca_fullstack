@@ -18,13 +18,14 @@ public class Exemplar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
-    private String Status;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ExemplarStatus status;
 
-    @Column
+    @Column(unique = true, nullable = false)
     private String codigo;
 
     @ManyToOne
+    @JoinColumn(name="livro_id", nullable = false)
     private Livro livro;
-
 }
