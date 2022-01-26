@@ -4,7 +4,6 @@ import com.example.biblioteca.cliente.entity.Cliente;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -23,16 +22,27 @@ public class Emprestimo {
     @Enumerated(EnumType.STRING)
     private EmprestimoStatus status;
 
+    @Column(nullable = false, updatable = false)
+//    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private String dataEmprestimo;
+
+    @Column(nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private String dataDevolucao;
+
+    @Column(nullable = false)
     private BigDecimal valor;
+
+    @Column(nullable = false)
     private BigDecimal multa;
 
     @ManyToOne
+    @JoinColumn(name="exemplar_id", nullable = false)
     private Exemplar exemplar;
 
     @ManyToOne
+    @JoinColumn(name="cliente_id", nullable = false)
     private Cliente cliente;
-
 
 }
