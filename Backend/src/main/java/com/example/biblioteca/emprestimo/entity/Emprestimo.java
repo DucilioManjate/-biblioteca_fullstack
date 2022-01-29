@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @RequiredArgsConstructor
@@ -23,13 +24,10 @@ public class Emprestimo {
     private EmprestimoStatus status;
 
     @Column(nullable = false, updatable = false)
-//    @Temporal(TemporalType.DATE)
-    @Temporal(TemporalType.TIMESTAMP)
-    private String dataEmprestimo;
+    private LocalDateTime dataEmprestimo;
 
     @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private String dataDevolucao;
+    private LocalDateTime  dataDevolucao;
 
     @Column(nullable = false)
     private BigDecimal valor;

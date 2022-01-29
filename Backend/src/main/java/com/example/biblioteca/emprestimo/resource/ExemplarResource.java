@@ -36,5 +36,4 @@ public class ExemplarResource {
         exemplarService.removerExemplar(id);
         return ResponseEntity.noContent().build();
     }
-
 }
