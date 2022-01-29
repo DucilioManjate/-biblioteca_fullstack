@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 
-import { NavBar } from "./drawer";
+import { NavBar } from "components/drawers";
 
 
 
