@@ -1,28 +1,47 @@
 package com.example.biblioteca.auth.resource;
 
 import com.example.biblioteca.auth.UsuarioService;
+import com.example.biblioteca.auth.entity.Role;
 import com.example.biblioteca.auth.entity.Usuario;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
-@RestController
-@RequestMapping("/usuarios")
+@RestController @RequiredArgsConstructor
+@RequestMapping("/api/auth")
 public class UsuarioResource {
-    @Autowired
-    private UsuarioService service;
+    private final UsuarioService usuarioService;
 
-    @PostMapping
-    public ResponseEntity<Usuario> create(@RequestBody Usuario usuario){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(usuario));
+    @GetMapping("/usuarios")
+    public ResponseEntity<List<Usuario>>getUsers(){
+        return ResponseEntity.ok().body(usuarioService.getUsers());
     }
-
-    @GetMapping
-    public ResponseEntity <List<Usuario>> listAll (){
-        return ResponseEntity.status(HttpStatus.OK).body(service.index());
+    @PostMapping("/usuario/salvo")
+    public ResponseEntity<Usuario>saveUser(@RequestBody Usuario user){
+        URI uri = URI.create(ServletUriComponentsBuilder.fromContextPath().path("/api/usuario/salvo").toUriString());
+        return ResponseEntity.created(uri).body(usuarioService.saveUser(user));
     }
+    @PostMapping("/role/salve")
+    public ResponseEntity<Role>saveUser(@RequestBody Role role){
+        URI uri = URI.create(ServletUriComponentsBuilder.fromContextPath().path("/api/role/salvo").toUriString());
+        return ResponseEntity.created(uri).body(usuarioService.saveRole(role));
+    }
+    @PostMapping("/role/AddUsuario")
+    public ResponseEntity<?>addRoleToUsuario(@RequestBody RoleToUsuarioFrom form){
+        usuarioService.addRoleToUser(form.getUsername(),form.getRoleName());
+        return ResponseEntity.ok().build();
+    }
+}
 
+@Data
+class RoleToUsuarioFrom {
+    private String username;
+    private String roleName;
 }
