@@ -30,6 +30,7 @@ public class ClienteService{
     }
 
     public Page<Cliente> listarClientes(Pageable pageable) {
+
         return clienteRepository.findAll(pageable);
     }
     public Cliente buscarClienteCpf(String cpf){
