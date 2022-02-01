@@ -16,8 +16,8 @@ public class Usuario extends Pessoa {
 
     @Column(nullable = false)
     private String senha;
-    @Column
-    private String role;
 
-
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }
