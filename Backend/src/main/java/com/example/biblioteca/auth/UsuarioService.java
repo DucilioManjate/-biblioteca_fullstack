@@ -1,5 +1,6 @@
 package com.example.biblioteca.auth;
 
+import com.example.biblioteca.auth.entity.Role;
 import com.example.biblioteca.auth.entity.Usuario;
 import com.example.biblioteca.auth.repository.UsuarioRepository;
 
@@ -9,17 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UsuarioService {
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    public Usuario create(Usuario usuario) {
-        return usuarioRepository.save(usuario);
-    }
-
-    public List<Usuario> index() {
-        return usuarioRepository.findAll();
-    }
+public interface UsuarioService {
+Usuario saveUser(Usuario user);
+Role saveRole(Role role);
+void addRoleToUser(String username, String roleName);
+Usuario getUsuario(String username);
+List<Usuario>getUsers();
 
 }
 
