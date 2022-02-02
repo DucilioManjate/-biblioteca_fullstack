@@ -38,5 +38,4 @@ public class LivroResource {
         livroService.remover(id);
         return ResponseEntity.noContent().build();
     }
-
 }
