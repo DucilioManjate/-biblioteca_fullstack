@@ -1,17 +1,8 @@
-package com.example.biblioteca.auth.resource;
+package com.example.biblioteca.usuario.resource;
 
-import com.example.biblioteca.auth.UsuarioService;
-import com.example.biblioteca.auth.entity.Role;
-import com.example.biblioteca.auth.entity.Usuario;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
-import java.util.List;
 
 @RestController @RequiredArgsConstructor
 @RequestMapping("/api/auth")

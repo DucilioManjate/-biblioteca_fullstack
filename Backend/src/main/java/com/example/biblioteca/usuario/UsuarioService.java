@@ -1,10 +1,8 @@
-package com.example.biblioteca.auth;
+package com.example.biblioteca.usuario;
 
-import com.example.biblioteca.auth.entity.Role;
-import com.example.biblioteca.auth.entity.Usuario;
-import com.example.biblioteca.auth.repository.UsuarioRepository;
+import com.example.biblioteca.usuario.entity.Role;
+import com.example.biblioteca.usuario.entity.Usuario;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
