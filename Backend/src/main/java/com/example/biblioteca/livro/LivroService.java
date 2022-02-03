@@ -54,15 +54,17 @@ public class LivroService {
 
     }
     public List<Livro> listarLivro(){
-        return livroRepository.findAll();
+
+        List<Livro> livros = livroRepository.findAllLivros();
+
+        return livros;
+
     }
     public Livro consultar(Integer id){
-        var livro= livroRepository.findById(id);
-        if (livro.isEmpty()){
-            throw new ResourceNotFoundException("livro não encontrada");
-        }
-        return livro.get();
-    }
+       var livro = livroRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("livro não encontrada"));
+        System.out.println(livro.toString());
+        return livro;
+       }
     public void remover(Integer id) {
         consultar(id);
         livroRepository.deleteById(id);

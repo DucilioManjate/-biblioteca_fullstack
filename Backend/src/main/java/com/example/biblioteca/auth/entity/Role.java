@@ -1,4 +1,4 @@
-package com.example.biblioteca.usuario.entity;
+package com.example.biblioteca.auth.entity;
 
 
 public enum Role {

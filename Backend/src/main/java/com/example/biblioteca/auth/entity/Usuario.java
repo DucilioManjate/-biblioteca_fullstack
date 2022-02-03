@@ -1,9 +1,14 @@
-package com.example.biblioteca.usuario.entity;
+package com.example.biblioteca.auth.entity;
 
 import com.example.biblioteca.pessoa.entity.Pessoa;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.GenerationType.AUTO;
 
 @Entity
 @Data

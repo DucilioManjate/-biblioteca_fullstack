@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -20,5 +22,8 @@ public class AreaConhecimento {
 
         @Column(nullable = false)
         private String nome;
+
+        @ManyToMany(mappedBy = "areaConhecimentos")
+        private List<Livro> books = new ArrayList<>();
 
 }

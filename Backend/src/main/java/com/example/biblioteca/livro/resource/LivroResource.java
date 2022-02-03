@@ -25,6 +25,7 @@ public class LivroResource {
 
     @GetMapping
     public ResponseEntity<List<Livro>> listar(){
+
         return ResponseEntity.ok(livroService.listarLivro());
     }
 
