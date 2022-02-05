@@ -8,8 +8,6 @@ import {
   HStack,
   SimpleGrid,
   VStack,
-  useToast,
-  Select,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -18,56 +16,36 @@ import Link from "next/link";
 import { Input } from "components/Form/Input";
 import { Header } from "components/Header";
 import { SideBar } from "components/SideBar";
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useState } from "react";
+import { useCallback } from "react";
 import { api } from "services/api";
+import { useToast } from "@chakra-ui/react";
 
-const EditQuartoFormSchema = yup.object().shape({
-  numero: yup.string().required("Número é obrigatório"),
-  valor: yup.number().required("Preço é obrigatório"),
-  quant_ocupacao: yup.number().required("Ocupação é obrigatório"),
-  detalhes: yup.string().required("Detalhes é obrigatório"),
-  livro: yup.object().shape({
-    id: yup.number().required("Hotel é obrigatório"),
-  }),
+const EditClienteFormSchema = yup.object().shape({
+  nome: yup.string().required("obrigatório"),
+  
 });
 
-export default function EditQuarto() {
+export default function EditHospede() {
   const toast = useToast();
   const router = useRouter();
   const { id } = router.query;
-  const [enderecos, setEnderecos] = useState([]);
   const [nome, setNome] = useState("");
-  const [classificacao, setClassificacao] = useState(0);
-  const [endereco, setEndereco] = useState();
-  const { formState, register, handleSubmit } = useForm({
-    resolver: yupResolver(EditQuartoFormSchema),
-  });
 
+
+  const { register, formState, handleSubmit } = useForm({
+    resolver: yupResolver(EditClienteFormSchema),
+  });
   async function getItem() {
     try {
-      const response = await api.get(`Livros/${id}`);
+      const response = await api.get(`autores/?${id}`);
+      
       setNome(response.data.nome);
-      setClassificacao(response.data.classificacao);
-      setEndereco(response.data.endereco.id);
-    } catch (error) {
-      console.log(error);
-      toast({
-        title: "Problema ao carregar livro.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  }
 
-  async function getEnderecos() {
-    try {
-      const response = await api.get("enderecos");
-      setEnderecos(response.data);
     } catch (error) {
       console.log(error);
       toast({
-        title: "Problema ao carregar endereços.",
+        title: "Problema ao carregar cliente.",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -76,16 +54,15 @@ export default function EditQuarto() {
   }
 
   useEffect(() => {
-    getItem();
-    getEnderecos();
-  }, []);
+    if(id)getItem();
+  }, [id]);
 
   const { errors } = formState;
-  const editHotel = useCallback(async (data) => {
+  const editHospede = useCallback(async (data) => {
     try {
-      await api.put(`Livros/${id}`, data);
+      await api.put(`autores${id}`, data);
       toast({
-        title: "Hotel editado.",
+        title: "Cliente editado.",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -93,7 +70,7 @@ export default function EditQuarto() {
     } catch (error) {
       console.log(error);
       toast({
-        title: "Problema ao editar livro.",
+        title: "Problema ao editar cliente.",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -106,61 +83,28 @@ export default function EditQuarto() {
       <Header />
       <Flex w="100%" my="6" mx="auto" maxWidth={1480} px="6">
         <SideBar />
-        <Box
-          as="form"
-          flex="1"
-          borderRadius={8}
-          bg="gray.800"
-          p="8"
-          onSubmit={handleSubmit(editHotel)}
-        >
+        <Box as="form" flex="1" borderRadius={8} bg="gray.800" p="8" onSubmit={handleSubmit(editHospede)}>
           <Heading fontSize="lg" fontWeight="normal">
-            Editar Quarto
+            Editar cliente
           </Heading>
           <Divider my="6" borderColor="gray.700" />
           <VStack spacing="8">
             <SimpleGrid minChildWidth="240px" spacing="8" width="100%">
-              <Input
-                name="nome"
-                label="Nome"
-                type="text"
-                error={errors.nome}
-                {...register("nome")}
-                value={nome}
-                onChange={(event) => setNome(event.target.value)}
-              />
-              <Input
-                name="classificacao"
-                label="Classificação"
-                type="number"
-                error={errors.classificacao}
-                {...register("classificacao")}
-                value={classificacao}
-                onChange={(event) =>
-                  setClassificacao(Number(event.target.value))
-                }
-              />
-            </SimpleGrid>
-
-            <SimpleGrid minChildWidth="240px" spacing="8" width="100%">
-              <Select
-                name="endereco"
-                id="endereco"
-                bgColor="white"
-                color="gray.900"
-                placeholder="Selecione o endereço"
-                error={errors.endereco?.id}
-                {...register("endereco.id")}
-              >
-                {enderecos.map((endereco) => (
-                  <option value={endereco.id}>{endereco.logradouro}</option>
-                ))}
-              </Select>
+             
+            <Input
+                  name="nome"
+                  label="Nome"
+                  error={errors.nome}
+                  {...register("nome")}
+                  value={nome}
+                  onChange={(event) => setNome(event.target.value)}
+                />
+              
             </SimpleGrid>
           </VStack>
           <Flex mt="8" justify="flex-end">
             <HStack spacing="4">
-              <Link href="/Livros">
+              <Link href="/clientes">
                 <Button as="a" colorScheme="whiteAlpha">
                   Cancelar
                 </Button>
@@ -170,7 +114,7 @@ export default function EditQuarto() {
                 colorScheme="blue"
                 isLoading={formState.isSubmitting}
               >
-                Editar
+                Salvar
               </Button>
             </HStack>
           </Flex>

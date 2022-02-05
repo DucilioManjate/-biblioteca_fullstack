@@ -5,7 +5,9 @@ import {
   Flex,
   Heading,
   HStack,
+  Select,
   SimpleGrid,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -15,42 +17,124 @@ import Link from "next/link";
 import { Input } from "../../components/Form/Input";
 import { Header } from "../../components/Header";
 import { SideBar } from "../../components/SideBar";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { api } from "../../services/api";
 
-type CreateHotelFormData = {
+type CreateLivroFormData = {
   name: string;
 };
 
-const CreateHotelFormSchema = yup.object().shape({
-  nome: yup.string().required("Nome obrigatório"),
-  logradouro: yup.string().required("Logradouro obrigatório"),
-  numero: yup.number().required("Número obrigatório"),
-  cidade: yup.string().required("Cidade obrigatório"),
-  status: yup.string().required("Estado obrigatório"),
+const CreateLivroFormSchema = yup.object().shape({
+  edicao: yup.string().required("edicao obrigatório"),
+  titulo: yup.string().required("titulo obrigatório"),
+  ano: yup.string().required("ano obrigatório"),
+  resume: yup.string().required("resume obrigatório"),
+  miniatura: yup.string().required("miniatura obrigatório"),
+
+  categoria: yup.object().shape({
+    id: yup.number().required("Categora é obrigatório"),
+  }),
+  editora: yup.object().shape({
+    id: yup.number().required("Editora é obrigatório"),
+  }),
+  areaConhecimentos:yup.array().of( yup.object().shape({
+    id: yup.number().required("Categora é obrigatório"),
+  })),
+  autores: yup.array().of(yup.object().shape({
+    id: yup.number().required("autores é obrigatório"),
+  })),
+
 });
 
-export default function CreateHotel() {
-  const [nome, setNome] = useState("");
-  const [classificacao, setClassificacao] = useState(0);
-  const [logradouro, setLogradouro] = useState("");
-  const [numero, setNumero] = useState(0);
-  const [complemento, setComplemento] = useState("");
-  const [cidade, setCidade] = useState("");
-  const [status, setEstado] = useState("");
-  
+export default function CreateLivrol() {
+  const toast = useToast();
+  const [editoras, setEditoras] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [areaConhecimentos, setAreaConhecimentos] = useState([]);
+  const [autores, setAutores] = useState([]);
+
+  const [edicao, setEdicao] = useState("");
+  const [titulo, setTitulo] = useState("");
+  const [ano, setAno] = useState("");
+  const [resume, setResume] = useState("");
+  const [miniatura, setMiniatura] = useState("");
+
+
   const { register, handleSubmit, formState } = useForm({
-    resolver: yupResolver(CreateHotelFormSchema),
+    resolver: yupResolver(CreateLivroFormSchema),
   });
 
   const { errors } = formState;
-
-  const createHotel = useCallback(async (data) => {
+  async function getAutores() {
     try {
-      await api.post("Livros", data);
+      const response = await api.get("autores");
+      setAutores(response.data);
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Problema ao carregar .",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  }
+  async function getEditoras() {
+    try {
+      const response = await api.get("editoras");
+      setEditoras(response.data);
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Problema ao carregar .",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  } async function getAreaConhecimentos() {
+    try {
+      const response = await api.get("areas-conhecimento");
+      setAreaConhecimentos(response.data);
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Problema ao carregar AreaConhecimentos",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  } async function postCategorias() {
+    try {
+      const response = await api.get("categorias");
+      setCategorias(response.data);
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Problema ao carregar.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  }
+
+  const createAutorFormSchema = useCallback(async (data) => {
+    console.log(data)
+    try {
+      await api.post("livros", data);
     } catch (error) {
       console.log(error.error);
     }
+  }, []);
+
+  useEffect(() => {
+    getAutores();
+   // getCategorias();
+    getEditoras();
+    getAreaConhecimentos();
+
   }, []);
 
   return (
@@ -64,81 +148,118 @@ export default function CreateHotel() {
           borderRadius={8}
           bg="gray.800"
           p="8"
-          onSubmit={handleSubmit(createHotel)}
+          onSubmit={handleSubmit(createAutorFormSchema)}
         >
           <Heading fontSize="lg" fontWeight="normal">
-            Criar cliente
+            Criar livros
           </Heading>
           <Divider my="6" borderColor="gray.700" />
           <VStack spacing="8">
             <SimpleGrid minChildWidth="240px" spacing="8" width="100%">
               <Input
-                name="nome"
-                label="Nome do Hotel"
-                error={errors.nome}
-                {...register("nome")}
-                value={nome}
-                onChange={(event) => setNome(event.target.value)}
+                name="edicao"
+                label="Edição do livro"
+                error={errors.edicao}
+                {...register("edicao")}
+                value={edicao}
+                onChange={(event) => setEdicao(event.target.value)}
               />
-              <Input 
-                name="classificacao" 
-                label="Classificação" 
-                type="number" 
-                error={errors.classificacao}
-                {...register("classificacao")}
-                value={classificacao}
-                onChange={(event) => setClassificacao(Number(event.target.value))}
-                />
+              <Input
+                name="titulo"
+                label="Tiitulo do livro"
+                error={errors.titulo}
+                {...register("titulo")}
+                value={titulo}
+                onChange={(event) => setTitulo(event.target.value)}
+              />
+
+              <Input
+                name="ano"
+                label="Ano livro"
+                error={errors.ano}
+                {...register("ano")}
+                value={ano}
+                onChange={(event) => setAno(event.target.value)}
+              />
+
+              <Input
+                name="resume"
+                label="Resume"
+                error={errors.resume}
+                {...register("resume")}
+                value={resume}
+                onChange={(event) => setResume(event.target.value)}
+              />
+
+              <Input
+                name="miniatura"
+                label="Miniatura"
+                error={errors.miniatura}
+                {...register("miniatura")}
+                value={miniatura}
+                onChange={(event) => setMiniatura(event.target.value)}
+              />
+              <Select
+                name="categoria"
+                id="categora"
+                bgColor="white"
+                color="gray.900"
+                placeholder="Selecione a categoria"
+                error={errors.categoria?.id}
+                {...register("categoria.id")}
+              >
+                {categorias.map((categoria) => (
+                  <option value={categoria.id}>{categoria.nome}</option>
+                ))}
+              </Select>
+              <Select
+                name="editora"
+                id="editora"
+                bgColor="white"
+                color="gray.900"
+                placeholder="Selecione o editora"
+                error={errors.editora?.id}
+                {...register("editora.id")}
+              >
+                {editoras.map((editora) => (
+                  <option value={editora.id}>{editora.nome}</option>
+                ))}
+              </Select>
+
+              <Select
+                name="autores"
+                id="autores"
+                bgColor="white"
+                color="gray.900"
+                placeholder="Selecione o autores"
+                error={errors.autores?.id}
+                {...register("autores.id")}
+              >
+                {autores.map((autor) => (
+                  <option value={autor.id}>{autor.nome}</option>
+                ))}
+              </Select>
+
+              <Select
+                name="areaConhecimentos"
+                id="areaConhecimentos"
+                bgColor="white"
+                color="gray.900"
+                placeholder="Selecione o areaConhecimentos"
+                error={errors.areaConhecimentos?.id}
+                {...register("areaConhecimentos.id")}
+              >
+                {areaConhecimentos.map((areaC) => (
+                  <option value={areaC.id}>{areaC.nome}</option>
+                ))}
+              </Select>
+
             </SimpleGrid>
-            <SimpleGrid minChildWidth="240px" spacing="8" width="100%">
-              <Input 
-                name="logradouro"
-                label="Rua"
-                error={errors.logradouro}
-                {...register("logradouro")}
-                value={logradouro}
-                onChange={(event) => setLogradouro(event.target.value)}
-                />
-              <Input 
-                name="numero"
-                type="number" 
-                label="Número" 
-                error={errors.numero}
-                {...register("numero")}
-                value={numero}
-                onChange={(event) => setNumero(Number(event.target.value))}
-                />
-            </SimpleGrid>
-            <SimpleGrid minChildWidth="240px" spacing="8" width="100%">
-              <Input 
-                name="complemento"
-                label="Complemento"
-                error={errors.complemento}
-                {...register("complemento")}
-                value={complemento}
-                onChange={(event) => setComplemento(event.target.value)}
-                />
-              <Input 
-                name="cidade" 
-                label="Cidade" 
-                error={errors.cidade}
-                {...register("cidade")}
-                value={cidade}
-                onChange={(event) => setCidade(event.target.value)}                
-                />
-              <Input 
-                name="status" 
-                label="Estado" 
-                error={errors.status}
-                {...register("status")}
-                value={status}
-                onChange={(event) => setEstado(event.target.value)}
-                />
-            </SimpleGrid> 
+
           </VStack>
           <Flex mt="8" justify="flex-end">
             <HStack spacing="4">
-              <Link href="/Livros">
+              <Link href="/livros">
                 <Button as="a" colorScheme="whiteAlpha">
                   Cancelar
                 </Button>
@@ -147,6 +268,7 @@ export default function CreateHotel() {
                 type="submit"
                 colorScheme="blue"
                 isLoading={formState.isSubmitting}
+                
               >
                 Salvar
               </Button>

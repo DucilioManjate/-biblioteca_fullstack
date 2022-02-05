@@ -44,9 +44,9 @@ export default function EditHotel() {
 
   const { errors } = formState;
 
-  // const createHotel = useCallback(async (data) => {
+  // const createAutorFormSchema  = useCallback(async (data) => {
   //   try {
-  //     await api.post("Livros", data);
+  //     await api.post("livros", data);
   //   } catch (error) {
   //     console.log(error.error);
   //   }
@@ -129,7 +129,7 @@ export default function EditHotel() {
           </VStack>
           <Flex mt="8" justify="flex-end">
             <HStack spacing="4">
-              <Link href="/Livros">
+              <Link href="/livros">
                 <Button as="a" colorScheme="whiteAlpha">
                   Cancelar
                 </Button>

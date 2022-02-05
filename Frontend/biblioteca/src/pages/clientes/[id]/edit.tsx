@@ -21,41 +21,36 @@ import { useCallback } from "react";
 import { api } from "services/api";
 import { useToast } from "@chakra-ui/react";
 
-const EditHospedeFormSchema = yup.object().shape({
-  nome: yup.string().required("Nome obrigatório"),
-  email: yup
-    .string()
-    .required("E-mail obrigatório")
-    .email("Digite um e-mail válido"),
-  cpf: yup.string().required("CPF obrigatório"),
-  nacionalidade: yup.string().required("Nacionalidade obrigatório"),
-  telefone: yup.number().required("Telefone obrigatório"),
-  data_nascimento: yup.date().required("Data de nascimento obrigatória")
+const EditClienteFormSchema = yup.object().shape({
+  documento: yup.string().required("obrigatório"),
+  telefone: yup.string().required("obrigatório"),
+  email: yup.string().required("obrigatório"),
+  cpf: yup.string().required("obrigatório"),
+  nomeCompleto: yup.string().required("obrigatório"),
 });
 
 export default function EditHospede() {
   const toast = useToast();
   const router = useRouter();
   const { id } = router.query;
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
+  const [documento, setDocumento] = useState("");
+  const [telefone, setTelefone] = useState("");
   const [cpf, setCpf] = useState("");
-  const [telefone, setTelefone] = useState(0);
-  const [data_nascimento, setDataNascimento] = useState("");
-  const [nacionalidade, setNacionalidade] = useState("");
+  const [email, setEmail] = useState("");
+  const [nomeCompleto, setNomeCompleto] = useState("");
 
   const { register, formState, handleSubmit } = useForm({
-    resolver: yupResolver(EditHospedeFormSchema),
+    resolver: yupResolver(EditClienteFormSchema),
   });
   async function getItem() {
     try {
-      const response = await api.get(`clientes/${id}`);
-      setNome(response.data.nome);
+      const response = await api.get(`clientes/query?id=${id}`);
+      
+      setDocumento(response.data.documento);
+      setTelefone(response.data.telefone);
       setEmail(response.data.email);
       setCpf(response.data.cpf);
-      setTelefone(response.data.telefone);
-      setDataNascimento(response.data.data_nascimento);
-      setNacionalidade(response.data.nacionalidade);
+      setNomeCompleto(response.data.nomeCompleto);
     } catch (error) {
       console.log(error);
       toast({
@@ -68,15 +63,15 @@ export default function EditHospede() {
   }
 
   useEffect(() => {
-    getItem();
-  }, []);
+    if(id)getItem();
+  }, [id]);
 
   const { errors } = formState;
   const editHospede = useCallback(async (data) => {
     try {
-      await api.put(`clientes/${id}`, data);
+      await api.put(`clientes/query?id=${id}`, data);
       toast({
-        title: "Hospede editado.",
+        title: "Cliente editado.",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -102,64 +97,49 @@ export default function EditHospede() {
             Editar cliente
           </Heading>
           <Divider my="6" borderColor="gray.700" />
-
           <VStack spacing="8">
             <SimpleGrid minChildWidth="240px" spacing="8" width="100%">
-              <Input
-                name="nome"
-                label="Nome completo"
-                error={errors.nome}
-                {...register("nome")}
-                value={nome}
-                onChange={(event) => setNome(event.target.value)}
-              />
-              <Input
-                name="email"
-                type="email"
-                label="E-mail"
-                error={errors.email}
-                {...register("email")}
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-              />
-            </SimpleGrid>
-            <SimpleGrid minChildWidth="240px" spacing="8" width="100%">
-              <Input
-                name="cpf"
-                label="CPF"
-                error={errors.cpf}
-                {...register("cpf")}
-                value={cpf}
-                onChange={(event) => setCpf(event.target.value)}
-              />
-              <Input
-                name="telefone"
-                type="number"
-                label="Telefone"
-                error={errors.telefone}
-                {...register("telefone")}
-                value={telefone}
-                onChange={(event) => setTelefone(Number(event.target.value))}
-              />
-            </SimpleGrid>
-            <SimpleGrid minChildWidth="240px" spacing="8" width="100%">
-              <Input
-                name="data_nascimento"
-                type="date"
-                label="Data de nascimento"
-                error={errors.data_nascimento}
-                {...register("data_nascimento")}
-                value={data_nascimento}
-                onChange={(event) => setDataNascimento(event.target.value)}
-              />
-              <Input
-                name="nacionalidade"
-                label="Nacionalidade"
-                error={errors.nacionalidade}
-                {...register("nacionalidade")}
-                value={nacionalidade}
-                onChange={(event) => setNacionalidade(event.target.value)}
-              />
+             
+            <Input
+                  name="documento"
+                  label="Documento"
+                  error={errors.documento}
+                  {...register("documento")}
+                  value={documento}
+                  onChange={(event) => setDocumento(event.target.value)}
+                />
+                <Input
+                  name="telefone"
+                  label="Telefone"
+                  error={errors.telefone}
+                  {...register("telefone")}
+                  value={telefone}
+                  onChange={(event) => setTelefone(event.target.value)}
+                />
+                <Input
+                  name="email"
+                  label="Email"
+                  error={errors.email}
+                  {...register("email")}
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+                <Input
+                  name="cpf"
+                  label="CPF"
+                  error={errors.cpf}
+                  {...register("cpf")}
+                  value={cpf}
+                  onChange={(event) => setCpf(event.target.value)}
+                />
+                <Input
+                  name="nomeCompleto"
+                  label="NomeCompleto"
+                  error={errors.nomeCompleto}
+                  {...register("nomeCompleto")}
+                  value={nomeCompleto}
+                  onChange={(event) => setNomeCompleto(event.target.value)}
+                />
             </SimpleGrid>
           </VStack>
           <Flex mt="8" justify="flex-end">

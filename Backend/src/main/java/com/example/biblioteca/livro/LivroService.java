@@ -2,6 +2,7 @@ package com.example.biblioteca.livro;
 
 import com.example.biblioteca.exceptions.ResourceNotFoundException;
 
+import com.example.biblioteca.livro.entity.Autor;
 import com.example.biblioteca.livro.entity.Livro;
 
 import com.example.biblioteca.livro.repository.AreaConhecimentoRepository;
@@ -68,5 +69,11 @@ public class LivroService {
     public void remover(Integer id) {
         consultar(id);
         livroRepository.deleteById(id);
+    }
+    public Livro atualizarLivro(Livro livro) throws Exception{
+        if(!livroRepository.existsById(livro.getId())) {
+            throw new Exception("Autor não encontrado!");
+        }
+        return livroRepository.save(livro);
     }
 }

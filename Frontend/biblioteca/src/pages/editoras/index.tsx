@@ -13,36 +13,36 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { RiAddLine, RiDeleteBinLine, RiPencilLine } from "react-icons/ri";
 import { Header } from "../../components/Header";
 
 import { SideBar } from "../../components/SideBar";
 import { api } from "../../services/api";
 
-export default function HotelList() {
+export default function EditoraList() {
   const [data, setData] = useState([]);
-  const [hotelId, setHotelId] = useState(0);
+  const [editoraId, setEditoraId] = useState();
 
-  async function deleteHotel(livro) {
-    setHotelId(livro.id);
-    console.log(hotelId);
+  const deleteEditora = useCallback(async (id) => {
+    setEditoraId(id)
+
     try {
-      await api.delete(`Livros/${hotelId}`);
+      console.log(editoraId);
+      await api.delete(`editoras/${editoraId}`);
       getItems();
     } catch (error) {
       console.log(error);
     }
-  }
+  }, [editoraId])
   async function getItems() {
     try {
-      const response = await api.get("Livros");
+      const response = await api.get("editoras");
       setData(response.data);
     } catch (error) {
       console.log(error);
     }
   }
-
   useEffect(() => {
     getItems();
   }, []);
@@ -54,9 +54,9 @@ export default function HotelList() {
         <Box flex="1" borderRadius={8} bg="gray.800" p="8">
           <Flex mb="8" justify="space-between" align="center">
             <Heading fontSize="lg" fontWeight="normal">
-              Livros
+              editoras
             </Heading>
-            <Link href="/Livros/create" passHref>
+            <Link href="/editoras/create" passHref>
               <Button
                 as="a"
                 size="sm"
@@ -73,57 +73,56 @@ export default function HotelList() {
             <Thead>
               <Tr>
                 <Th>Id</Th>
-                <Th>Hotel</Th>
-                <Th>Classifição</Th>
-
-                <Th width="8"></Th>
-                <Th width="8"></Th>
+                <Th>Nome</Th>
+                <Th width="2"></Th>
+                <Th width="2"></Th>
               </Tr>
             </Thead>
             <Tbody>
-            {data.map((livro) => (
-              <Tr key={livro.id}>
-                <Td>
-                  <Text>{livro.id}</Text>
-                </Td>
-                <Td>
-                  <Text fontWeight="bold">{livro.nome}</Text>
-                </Td>
-                <Td>
-                  <Text>{livro.classificacao}</Text>
-                </Td>
+              {data.map((editora) => (
+                <Tr key={editora.id}>
 
-                <Td>
-                  <Link href="/Livros/edit">
+                  <Td>
+                    <Text fontWeight="bold">{editora.id}</Text>
+                  </Td>
+
+
+                  <Td>
+                    <Text fontWeight="bold">{editora.nome}</Text>
+                  </Td>
+
+
+                  <Td>
+                    <Link href="/autores/edit">
+                      <Button
+                        as="a"
+                        size="sm"
+                        fontSize="sm"
+                        colorScheme="yellow"
+                        leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
+                      >
+                        Editar
+                      </Button>
+                    </Link>
+                  </Td>
+
+                  <Td>
                     <Button
                       as="a"
                       size="sm"
                       fontSize="sm"
-                      colorScheme="yellow"
-                      leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
+                      colorScheme="red"
+                      leftIcon={<Icon as={RiDeleteBinLine}
+                        fontSize="16"
+                        onClick={() => deleteEditora(editora.id)}
+                      />
+                      }
                     >
-                      Editar
+                      Excluir
                     </Button>
-                  </Link>
-                </Td>
-
-                <Td>
-                  <Button
-                    as="a"
-                    size="sm"
-                    fontSize="sm"
-                    colorScheme="red"
-                    leftIcon={<Icon as={RiDeleteBinLine} 
-                    fontSize="16"
-                    onClick={() => deleteHotel(livro)}
-                    />
-                  }
-                  >
-                    Excluir
-                  </Button>
-                </Td>
-              </Tr>
-            ))}
+                  </Td>
+                </Tr>
+              ))}
             </Tbody>
           </Table>
         </Box>

@@ -21,7 +21,7 @@ import { SideBar } from "components/SideBar";
 import { useState, useEffect, useCallback } from "react";
 import { api } from "services/api";
 
-const EditQuartoFormSchema = yup.object().shape({
+const EditAreaConhecimento = yup.object().shape({
   numero: yup.string().required("Número é obrigatório"),
   valor: yup.number().required("Preço é obrigatório"),
   quant_ocupacao: yup.number().required("Ocupação é obrigatório"),
@@ -35,14 +35,14 @@ export default function EditQuarto() {
   const toast = useToast();
   const router = useRouter();
   const { id } = router.query;
-  const [Livros, setLivros] = useState([]);
+  const [livros, setLivros] = useState([]);
   const [numero, setNumero] = useState(0);
   const [valor, setPreco] = useState(0);
   const [quant_ocupacao, setQuant_ocupacao] = useState(0);
   const [detalhes, setDetalhes] = useState("");
   const [livro, setHotel] = useState();
   const { formState, register, handleSubmit } = useForm({
-    resolver: yupResolver(EditQuartoFormSchema),
+    resolver: yupResolver(EditAreaConhecimento),
   });
 
   async function getItem() {
@@ -66,12 +66,12 @@ export default function EditQuarto() {
 
   async function getLivros() {
     try {
-      const response = await api.get("Livros");
+      const response = await api.get("livros");
       setLivros(response.data);
     } catch (error) {
       console.log(error);
       toast({
-        title: "Problema ao carregar Livros.",
+        title: "Problema ao carregar livros.",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -178,7 +178,7 @@ export default function EditQuarto() {
                 value={livro}
                 {...register("livro.id")}
               >
-                {Livros.map((livro) => (
+                {livros.map((livro) => (
                   <option  value={livro.id}>{livro.nome}</option>
                 ))}
               </Select>

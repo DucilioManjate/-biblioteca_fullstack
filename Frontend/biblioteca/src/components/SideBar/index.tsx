@@ -1,10 +1,5 @@
-import { Box, Stack, Text, Link, Icon } from "@chakra-ui/react";
-import {
-  RiCalendarCheckLine,
-  RiContactsLine,
-  RiHotelBedLine,
-  RiHotelLine,
-} from "react-icons/ri";
+import { Box, Stack} from "@chakra-ui/react";
+
 import { NavLink } from "./NavLink";
 import { NavSection } from "./NavSection";
 
@@ -12,11 +7,15 @@ export function SideBar() {
   return (
     <Box as="aside" w="64" mr="8">
       <Stack spacing="12" align="flex-start">
-        <NavSection title="GERAL">
-          <NavLink href="/emprestimos" icon={RiCalendarCheckLine}>emprestimos</NavLink>
-          <NavLink href="/clientes" icon={RiContactsLine}>Clientes</NavLink>
-          <NavLink href="/Livros" icon={RiHotelLine}>Livros</NavLink>
-          <NavLink href="/exemplares" icon={RiHotelBedLine}>Exemplares</NavLink>
+        <NavSection>
+          <NavLink href="/clientes">Clientes</NavLink>
+          <NavLink href="/autores">Autores</NavLink>
+          <NavLink href="/categorias">Categorias</NavLink>
+          <NavLink href="/editoras">Editoras</NavLink>
+          <NavLink href="/areas_conhecimentos">Aréas de conhecimentos</NavLink>
+          <NavLink href="/exemplares">Exemplares</NavLink>
+        <NavLink href="/livros">Livros</NavLink>
+          <NavLink href="/emprestimos">Emprestimos</NavLink>
         </NavSection>
        
       </Stack>

@@ -1,8 +1,10 @@
-import { Flex, Button, Stack } from "@chakra-ui/react";
+import { Flex, Button, Stack, useToast } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import* as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Input } from "../components/Form/Input";
+import router from "next/router";
+
 
 type SignInFormData = {
   email: string;
@@ -12,9 +14,12 @@ type SignInFormData = {
 const signInFormSchema =yup.object().shape({
   email: yup.string().required('E-mail obrigatório').email('Digite um e-mail válido'),
   password: yup.string().required('Senha obrigatória'),
+
 })
 
 export default function SignIn() {
+
+  const toast = useToast()
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(signInFormSchema)
   });
@@ -24,7 +29,16 @@ export default function SignIn() {
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    console.log(values);
+    if(values.email ==="admin@admin.com" && values.password === "admin"){
+      router.push("/livros")
+    }else{
+      toast({
+        title: "Erro de credenciais!!!",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   return (

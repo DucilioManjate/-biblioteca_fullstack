@@ -17,11 +17,7 @@ public class EmprestimoService {
     private final EmprestimoRepository emprestimoRepository;
 
     public Emprestimo cadastrarEmprestimo(Emprestimo emprestimo){
-        var emprestimoDoLivroCadastrado = emprestimoRepository.findById(emprestimo.getId());
 
-        if (emprestimoDoLivroCadastrado.isPresent()){
-            throw new BusinessRuleException("Emprestimo cadastrado com sucesso");
-        }
         return emprestimoRepository.save(emprestimo);
     }
 

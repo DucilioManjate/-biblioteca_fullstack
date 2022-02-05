@@ -20,58 +20,42 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { RiAddLine, RiDeleteBinLine, RiPencilLine } from "react-icons/ri";
 import { Header } from "components/Header";
 import { SideBar } from "components/SideBar";
 import { api } from "services/api";
 
-export default function QuartoList() {
+export default function ExemplarList() {
   const toast = useToast();
   const [data, setData] = useState([]);
-  const [quartoId, setQuartoId] = useState(0);
+  const [exemplarId, setExemplarId] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef();
 
-  async function openDeleteQuarto(exemplar) {
-    setQuartoId(exemplar.id);
+  async function openExemplar(exemplar) {
+    setExemplarId(exemplar.id);
     setIsOpen(true);
   }
 
-  async function deleteQuarto() {
+  const deleteExemplar = useCallback(async (id) => {
+    setExemplarId(id)
+
     try {
-      await api.delete(`exemplares/${quartoId}`);
-      setIsOpen(false);
+      console.log(exemplarId);
+      await api.delete(`exemplares/${exemplarId}`);
       getItems();
-      toast({
-        title: "Quarto apagado.",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
     } catch (error) {
       console.log(error);
-      toast({
-        title: "Problema ao apagar exemplar.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
     }
-  }
+  }, [exemplarId])
   async function getItems() {
     try {
       const response = await api.get("exemplares");
       setData(response.data);
     } catch (error) {
       console.log(error);
-      toast({
-        title: "Problema ao carregar exemplares.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
     }
   }
   useEffect(() => {
@@ -92,18 +76,16 @@ export default function QuartoList() {
             <AlertDialogOverlay color="gray.900">
               <AlertDialogContent>
                 <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                  Apagar Quarto
+                  Apagar Exemplar
                 </AlertDialogHeader>
-
                 <AlertDialogBody>
                   Tem certeza? Esta ação, é irreversível.
                 </AlertDialogBody>
-
                 <AlertDialogFooter>
                   <Button ref={cancelRef} onClick={onClose}>
                     Cancelar
                   </Button>
-                  <Button colorScheme="red" onClick={deleteQuarto} ml={3}>
+                  <Button colorScheme="red" onClick={deleteExemplar} ml={3}>
                     Apagar
                   </Button>
                 </AlertDialogFooter>
@@ -131,10 +113,11 @@ export default function QuartoList() {
             <Thead>
               <Tr>
                 <Th>Id</Th>
-                <Th>Número</Th>
-                <Th>Preço</Th>
-                <Th>Ocupação</Th>
-
+                <Th>Status</Th>
+                <Th>Codigo do livro</Th>
+                <Th width="8"></Th>
+                <Th width="8"></Th>
+                <Th width="8"></Th>
                 <Th width="8"></Th>
                 <Th width="8"></Th>
               </Tr>
@@ -144,13 +127,10 @@ export default function QuartoList() {
                 <Tr key={exemplar.id}>
                   <Td>{exemplar.id}</Td>
                   <Td>
-                    <Text fontWeight="bold">{exemplar.numero}</Text>
+                    <Text fontWeight="bold">{exemplar.status}</Text>
                   </Td>
                   <Td>
-                    <Text>{exemplar.valor}</Text>
-                  </Td>
-                  <Td>
-                    <Text>{exemplar.quant_ocupacao}</Text>
+                    <Text>{exemplar.codigo}</Text>
                   </Td>
 
                   <Td>
@@ -172,7 +152,7 @@ export default function QuartoList() {
                       size="sm"
                       fontSize="sm"
                       colorScheme="red"
-                      onClick={() => openDeleteQuarto(exemplar)}
+                      onClick={() => openExemplar(exemplar.id)}
                       leftIcon={<Icon as={RiDeleteBinLine} fontSize="16" />}
                     >
                       Excluir

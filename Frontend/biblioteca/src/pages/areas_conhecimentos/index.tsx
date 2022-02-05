@@ -13,30 +13,34 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { RiAddLine, RiDeleteBinLine, RiPencilLine } from "react-icons/ri";
 import { Header } from "../../components/Header";
 
 import { SideBar } from "../../components/SideBar";
 import { api } from "../../services/api";
 
-export default function HotelList() {
+export default function AreaConhecimentoList() {
   const [data, setData] = useState([]);
-  const [hotelId, setHotelId] = useState(0);
+  const [areaConhecimentoId, setAreaConhecimentoId] = useState(0);
 
-  async function deleteHotel(livro) {
-    setHotelId(livro.id);
-    console.log(hotelId);
+
+  const deleteAreaConhecimento=  useCallback(async (id) => {
+    setAreaConhecimentoId(id)
+
     try {
-      await api.delete(`Livros/${hotelId}`);
+      console.log(areaConhecimentoId);
+     await api.delete(`area-conhecimentos/${areaConhecimentoId}`);
       getItems();
     } catch (error) {
       console.log(error);
     }
-  }
+  },[areaConhecimentoId])
+
+
   async function getItems() {
     try {
-      const response = await api.get("Livros");
+      const response = await api.get("areas-conhecimento");
       setData(response.data);
     } catch (error) {
       console.log(error);
@@ -54,9 +58,9 @@ export default function HotelList() {
         <Box flex="1" borderRadius={8} bg="gray.800" p="8">
           <Flex mb="8" justify="space-between" align="center">
             <Heading fontSize="lg" fontWeight="normal">
-              Livros
+            Areas de conhecimentos
             </Heading>
-            <Link href="/Livros/create" passHref>
+            <Link href="/areas_conhecimentos/create" passHref>
               <Button
                 as="a"
                 size="sm"
@@ -73,28 +77,25 @@ export default function HotelList() {
             <Thead>
               <Tr>
                 <Th>Id</Th>
-                <Th>Hotel</Th>
-                <Th>Classifição</Th>
+                <Th>Areas de conhecimentos</Th>
+                
 
                 <Th width="8"></Th>
                 <Th width="8"></Th>
               </Tr>
             </Thead>
             <Tbody>
-            {data.map((livro) => (
-              <Tr key={livro.id}>
+            {data.map((areaConhecimento) => (
+              <Tr key={areaConhecimento.id}>
                 <Td>
-                  <Text>{livro.id}</Text>
+                  <Text>{areaConhecimento.id}</Text>
                 </Td>
                 <Td>
-                  <Text fontWeight="bold">{livro.nome}</Text>
+                  <Text fontWeight="bold">{areaConhecimento.nome}</Text>
                 </Td>
+               
                 <Td>
-                  <Text>{livro.classificacao}</Text>
-                </Td>
-
-                <Td>
-                  <Link href="/Livros/edit">
+                  <Link href="/areas_conhecimentos/edit">
                     <Button
                       as="a"
                       size="sm"
@@ -115,7 +116,7 @@ export default function HotelList() {
                     colorScheme="red"
                     leftIcon={<Icon as={RiDeleteBinLine} 
                     fontSize="16"
-                    onClick={() => deleteHotel(livro)}
+                    onClick={() => deleteAreaConhecimento(areaConhecimentoId)}
                     />
                   }
                   >

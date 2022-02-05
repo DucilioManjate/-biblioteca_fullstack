@@ -11,24 +11,27 @@ import {
   Th,
   Thead,
   Tr,
+  Link as ChakraLink,
+  LinkProps as ChakraLinkProps,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { RiAddLine, RiDeleteBinLine, RiPencilLine } from "react-icons/ri";
 import { Header } from "../../components/Header";
 
+
 import { SideBar } from "../../components/SideBar";
 import { api } from "../../services/api";
 
-export default function HotelList() {
+export default function LivroList() {
   const [data, setData] = useState([]);
-  const [hotelId, setHotelId] = useState(0);
+  const [livroId, setLivrolId] = useState();
 
-  async function deleteHotel(livro) {
-    setHotelId(livro.id);
-    console.log(hotelId);
+  async function deleteLivro(livro) {
+    setLivrolId(livro.id);
+    console.log(livroId);
     try {
-      await api.delete(`Livros/${hotelId}`);
+      await api.delete(`livros/${livro.Id}`);
       getItems();
     } catch (error) {
       console.log(error);
@@ -36,7 +39,7 @@ export default function HotelList() {
   }
   async function getItems() {
     try {
-      const response = await api.get("Livros");
+      const response = await api.get("livros");
       setData(response.data);
     } catch (error) {
       console.log(error);
@@ -54,9 +57,9 @@ export default function HotelList() {
         <Box flex="1" borderRadius={8} bg="gray.800" p="8">
           <Flex mb="8" justify="space-between" align="center">
             <Heading fontSize="lg" fontWeight="normal">
-              Livros
+              livros
             </Heading>
-            <Link href="/Livros/create" passHref>
+            <Link href="/livros/create" passHref>
               <Button
                 as="a"
                 size="sm"
@@ -73,8 +76,12 @@ export default function HotelList() {
             <Thead>
               <Tr>
                 <Th>Id</Th>
-                <Th>Hotel</Th>
-                <Th>Classifição</Th>
+                <Th>Edição</Th>
+                <Th>Tutulo</Th>
+                <Th>Ano</Th>
+                <Th>resume</Th>
+                <Th>Miniatura</Th>
+
 
                 <Th width="8"></Th>
                 <Th width="8"></Th>
@@ -87,14 +94,23 @@ export default function HotelList() {
                   <Text>{livro.id}</Text>
                 </Td>
                 <Td>
-                  <Text fontWeight="bold">{livro.nome}</Text>
+                  <Text fontWeight="bold">{livro.edicao}</Text>
                 </Td>
                 <Td>
-                  <Text>{livro.classificacao}</Text>
+                  <Text>{livro.titulo}</Text>
+                </Td>
+                <Td>
+                  <Text>{livro.ano}</Text>
+                </Td>
+                <Td>
+                  <Text>{livro.resume}</Text>
+                </Td>
+                <Td>
+                  <ChakraLink href={livro.miniatura} target="blank">Click na frase</ChakraLink>
                 </Td>
 
                 <Td>
-                  <Link href="/Livros/edit">
+                  <Link href="/livros/edit">
                     <Button
                       as="a"
                       size="sm"
@@ -115,7 +131,7 @@ export default function HotelList() {
                     colorScheme="red"
                     leftIcon={<Icon as={RiDeleteBinLine} 
                     fontSize="16"
-                    onClick={() => deleteHotel(livro)}
+                    onClick={() => deleteLivro(livro)}
                     />
                   }
                   >

@@ -17,5 +17,7 @@ void addRoleToUser(String username, String roleName);
 Usuario getUsuario(String username);
 List<Usuario>getUsers();
 
+
+
 }
 

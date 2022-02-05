@@ -1,6 +1,7 @@
 package com.example.biblioteca.emprestimo.entity;
 
 import com.example.biblioteca.cliente.entity.Cliente;
+import com.example.biblioteca.livro.entity.Livro;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -42,5 +43,9 @@ public class Emprestimo {
     @ManyToOne
     @JoinColumn(name="cliente_id", nullable = false)
     private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name="livro_id", nullable = false)
+    private Livro livro;
 
 }

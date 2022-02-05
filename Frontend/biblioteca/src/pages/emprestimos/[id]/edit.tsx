@@ -110,7 +110,7 @@ export default function EditEmprestimo() {
               />
               <Input
                 name="data_saida"
-                label="Data de saida"
+                label="Data de devoluição"
                 type="date"
                 error={errors.data_saida}
                 {...register("data_saida")}

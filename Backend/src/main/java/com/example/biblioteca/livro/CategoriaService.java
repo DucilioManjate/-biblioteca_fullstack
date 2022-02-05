@@ -1,6 +1,7 @@
 package com.example.biblioteca.livro;
 
 import com.example.biblioteca.exceptions.ResourceNotFoundException;
+import com.example.biblioteca.livro.entity.Autor;
 import com.example.biblioteca.livro.entity.Categoria;
 import com.example.biblioteca.livro.repository.CategoriaRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,13 @@ public class CategoriaService {
         }
         return categoria.get();
     }
+    public Categoria atualizarCategoria(Categoria categoria) throws Exception{
+        if(!categoriaRepository.existsById(categoria.getId())) {
+            throw new Exception("Autor não encontrado!");
+        }
+        return categoriaRepository.save(categoria);
+    }
+
     public void remover(Integer id) {
         consultar(id);
         categoriaRepository.deleteById(id);

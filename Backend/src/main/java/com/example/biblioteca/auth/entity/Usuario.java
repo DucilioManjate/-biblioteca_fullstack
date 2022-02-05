@@ -4,6 +4,7 @@ import com.example.biblioteca.pessoa.entity.Pessoa;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -20,15 +21,12 @@ public class Usuario extends Pessoa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank(message = "UserName is mandatory")
     @Column(nullable = false)
     private String username;
 
     @Column(nullable = false)
     private String senha;
-
-
-//    @ManyToMany(fetch = EAGER)
-//    private Collection<Role> roles = new ArrayList<>();
 
 
     @Column(nullable = false)

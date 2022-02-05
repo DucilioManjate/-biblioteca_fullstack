@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -17,11 +18,12 @@ public class ExemplarService {
     private final ExemplarRepository exemplarRepository;
 
     public Exemplar cadastrarExemplar(Exemplar exemplar){
-        var exemplarDoLivroCadastrado = exemplarRepository.findById(exemplar.getId());
-
-        if (exemplarDoLivroCadastrado.isPresent()){
+        if(exemplar.getId() != null){
             throw new BusinessRuleException("O exemplar o livro já está cadastrado");
         }
+
+        System.out.println(exemplar);
+        System.out.println("fodas");
         return exemplarRepository.save(exemplar);
     }
     public Exemplar buscarExemplarPorId(Integer id){

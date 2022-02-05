@@ -13,31 +13,32 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useEffect } from "react";
 import { RiAddLine, RiDeleteBinLine, RiPencilLine } from "react-icons/ri";
 import { Header } from "../../components/Header";
 import { SideBar } from "../../components/SideBar";
 import { api } from "../../services/api";
 
-export default function HospedeList() {
+export default function ClienteList() {
   const [data, setData] = useState([]);
-  const [hospedeId, setHospedeId] = useState(0);
+  const [clienteId, setClienteId] = useState();
 
-  async function deleteHospede(cliente) {
-    setHospedeId(cliente.id);
-    console.log(hospedeId);
+  const deleteCliente =  useCallback(async (id) => {
+    setClienteId(id)
+
     try {
-      await api.delete(`clientes/${hospedeId}`);
+      console.log(clienteId);
+     await api.delete(`clientes/${clienteId}`);
       getItems();
     } catch (error) {
       console.log(error);
     }
-  }
+  },[clienteId])
   async function getItems() {
     try {
       const response = await api.get("clientes");
-      setData(response.data);
+      setData(response.data.content);
     } catch (error) {
       console.log(error);
     }
@@ -74,9 +75,15 @@ export default function HospedeList() {
             <Thead>
               <Tr>
                 <Th>ID</Th>
-                <Th>Hospede</Th>
+      
                 <Th>Telefone</Th>
-                <Th>Nacionalidade</Th>
+                <Th>Email</Th>
+                <Th>Cpf</Th>
+                <Th>Documento</Th>
+                <Th>Nome Completo</Th>
+
+                
+               
                 <Th width="8"></Th>
                 <Th width="8"></Th>
               </Tr>
@@ -84,19 +91,16 @@ export default function HospedeList() {
             <Tbody>
               {data.map((cliente) => (
                 <Tr key={cliente.id}>
-                  <Td>{cliente.id}</Td>
-                  <Td>
-                    <Text fontWeight="bold">{cliente.nome}</Text>
-                    <Text fontSize="sm" color="gray.300">
-                      {cliente.email}
-                    </Text>
-                  </Td>
-                  <Td>
-                    <Text>{cliente.telefone}</Text>
-                  </Td>
-                  <Td>
-                    <Text>{cliente.nacionalidade}</Text>
-                  </Td>
+                 
+                 <Td>{cliente.id}</Td>
+                  <Td>{cliente.telefone}</Td>
+                  <Td>{cliente.email}</Td>
+                  <Td>{cliente.cpf}</Td>
+                  <Td>{cliente.documento}</Td>
+                  <Td>{cliente.nomeCompleto}</Td>
+                 
+
+                 
                   <Td>
                     <Link href={`/clientes/${cliente.id}/edit`}>
                       <Button
@@ -116,11 +120,12 @@ export default function HospedeList() {
                       size="sm"
                       fontSize="sm"
                       colorScheme="red"
+                      onClick={() => deleteCliente(cliente.id)}
                       leftIcon={
                         <Icon
                           as={RiDeleteBinLine}
                           fontSize="16"
-                          onClick={() => deleteHospede(cliente)}
+                          onClick={() => deleteCliente(cliente.id)}
                         />
                       }
                     >

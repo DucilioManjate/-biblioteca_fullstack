@@ -3,6 +3,7 @@ package com.example.biblioteca.livro;
 
 import com.example.biblioteca.exceptions.ResourceNotFoundException;
 import com.example.biblioteca.livro.entity.AreaConhecimento;
+import com.example.biblioteca.livro.entity.Autor;
 import com.example.biblioteca.livro.entity.Categoria;
 import com.example.biblioteca.livro.repository.AreaConhecimentoRepository;
 import com.example.biblioteca.livro.repository.CategoriaRepository;
@@ -23,6 +24,13 @@ public class AreaConhecimentoService {
     public List<AreaConhecimento> listarAreaConhecimenta(){
 
         return areaConhecimentoRepository.findAll();
+    }
+
+    public AreaConhecimento atualizarAreaConhecimento(AreaConhecimento areaConhecimento) throws Exception{
+        if(!areaConhecimentoRepository.existsById(areaConhecimento.getId())) {
+            throw new Exception("Area de conhecimento não encontrado!");
+        }
+        return areaConhecimentoRepository.save(areaConhecimento);
     }
 
     public AreaConhecimento consultar(Integer id){

@@ -21,7 +21,7 @@ import { SideBar } from "components/SideBar";
 import { useState, useEffect, useCallback } from "react";
 import { api } from "services/api";
 
-const EditQuartoFormSchema = yup.object().shape({
+const EditAreaConhecimento = yup.object().shape({
   numero: yup.string().required("Número é obrigatório"),
   valor: yup.number().required("Preço é obrigatório"),
   quant_ocupacao: yup.number().required("Ocupação é obrigatório"),
@@ -31,24 +31,25 @@ const EditQuartoFormSchema = yup.object().shape({
   }),
 });
 
-export default function EditQuarto() {
+export default function EditLivro() {
   const toast = useToast();
   const router = useRouter();
   const { id } = router.query;
-  const [enderecos, setEnderecos] = useState([]);
-  const [nome, setNome] = useState("");
-  const [classificacao, setClassificacao] = useState(0);
-  const [endereco, setEndereco] = useState();
+  const [edicao, setEdicao] = useState("");
+  const [titulo, setTitulo] = useState("");
+  const [ano, setAno] = useState("");
+  const [resume, setResume] = useState("");
+  const [miniatura, setMiniatura] = useState("");
   const { formState, register, handleSubmit } = useForm({
-    resolver: yupResolver(EditQuartoFormSchema),
+    resolver: yupResolver(EditLivro),
   });
 
   async function getItem() {
     try {
-      const response = await api.get(`Livros/${id}`);
-      setNome(response.data.nome);
-      setClassificacao(response.data.classificacao);
-      setEndereco(response.data.endereco.id);
+      const response = await api.get(`livros/${id}`);
+      setEdicao(response.data.edicao);
+      setTitulo(response.data.titulo);
+      
     } catch (error) {
       console.log(error);
       toast({
@@ -60,32 +61,13 @@ export default function EditQuarto() {
     }
   }
 
-  async function getEnderecos() {
-    try {
-      const response = await api.get("enderecos");
-      setEnderecos(response.data);
-    } catch (error) {
-      console.log(error);
-      toast({
-        title: "Problema ao carregar endereços.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  }
-
-  useEffect(() => {
-    getItem();
-    getEnderecos();
-  }, []);
-
+ 
   const { errors } = formState;
-  const editHotel = useCallback(async (data) => {
+  const editLivro= useCallback(async (data) => {
     try {
-      await api.put(`Livros/${id}`, data);
+      await api.put(`livros/${id}`, data);
       toast({
-        title: "Hotel editado.",
+        title: "Livro editado.",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -112,55 +94,66 @@ export default function EditQuarto() {
           borderRadius={8}
           bg="gray.800"
           p="8"
-          onSubmit={handleSubmit(editHotel)}
+          onSubmit={handleSubmit(editLivro)}
         >
           <Heading fontSize="lg" fontWeight="normal">
-            Editar Quarto
+            Editar Livro
           </Heading>
           <Divider my="6" borderColor="gray.700" />
           <VStack spacing="8">
             <SimpleGrid minChildWidth="240px" spacing="8" width="100%">
-              <Input
+              
+            <Input
                 name="nome"
-                label="Nome"
-                type="text"
+                label="Edição do livro"
                 error={errors.nome}
                 {...register("nome")}
-                value={nome}
-                onChange={(event) => setNome(event.target.value)}
+                value={edicao}
+                onChange={(event) => setEdicao(event.target.value)}
               />
               <Input
-                name="classificacao"
-                label="Classificação"
-                type="number"
-                error={errors.classificacao}
-                {...register("classificacao")}
-                value={classificacao}
-                onChange={(event) =>
-                  setClassificacao(Number(event.target.value))
-                }
+                name="nome"
+                label="Tiitulo do livro"
+                error={errors.nome}
+                {...register("nome")}
+                value={titulo}
+                onChange={(event) => setTitulo(event.target.value)}
               />
+
+              <Input
+                name="nome"
+                label="Ano livro"
+                error={errors.nome}
+                {...register("nome")}
+                value={ano}
+                onChange={(event) => setAno(event.target.value)}
+              />
+
+              <Input
+                name="nome"
+                label="Resume"
+                error={errors.nome}
+                {...register("nome")}
+                value={resume}
+                onChange={(event) => setResume(event.target.value)}
+              />
+
+              <Input
+                name="nome"
+                label="Miniatura"
+                error={errors.nome}
+                {...register("nome")}
+                value={miniatura}
+                onChange={(event) => setMiniatura(event.target.value)}
+              />
+              
             </SimpleGrid>
 
-            <SimpleGrid minChildWidth="240px" spacing="8" width="100%">
-              <Select
-                name="endereco"
-                id="endereco"
-                bgColor="white"
-                color="gray.900"
-                placeholder="Selecione o endereço"
-                error={errors.endereco?.id}
-                {...register("endereco.id")}
-              >
-                {enderecos.map((endereco) => (
-                  <option value={endereco.id}>{endereco.logradouro}</option>
-                ))}
-              </Select>
-            </SimpleGrid>
+            
           </VStack>
           <Flex mt="8" justify="flex-end">
             <HStack spacing="4">
-              <Link href="/Livros">
+              <Link href="/livros">
                 <Button as="a" colorScheme="whiteAlpha">
                   Cancelar
                 </Button>

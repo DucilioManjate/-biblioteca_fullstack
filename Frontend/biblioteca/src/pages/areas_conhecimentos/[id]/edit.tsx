@@ -21,11 +21,8 @@ import { SideBar } from "components/SideBar";
 import { useState, useEffect, useCallback } from "react";
 import { api } from "services/api";
 
-const EditQuartoFormSchema = yup.object().shape({
+const EditAreaConhecimento = yup.object().shape({
   numero: yup.string().required("Número é obrigatório"),
-  valor: yup.number().required("Preço é obrigatório"),
-  quant_ocupacao: yup.number().required("Ocupação é obrigatório"),
-  detalhes: yup.string().required("Detalhes é obrigatório"),
   livro: yup.object().shape({
     id: yup.number().required("Hotel é obrigatório"),
   }),
@@ -35,19 +32,19 @@ export default function EditQuarto() {
   const toast = useToast();
   const router = useRouter();
   const { id } = router.query;
-  const [enderecos, setEnderecos] = useState([]);
+
   const [nome, setNome] = useState("");
-  const [classificacao, setClassificacao] = useState(0);
+ 
   const [endereco, setEndereco] = useState();
   const { formState, register, handleSubmit } = useForm({
-    resolver: yupResolver(EditQuartoFormSchema),
+    resolver: yupResolver(EditAreaConhecimento),
   });
 
   async function getItem() {
     try {
       const response = await api.get(`Livros/${id}`);
       setNome(response.data.nome);
-      setClassificacao(response.data.classificacao);
+     
       setEndereco(response.data.endereco.id);
     } catch (error) {
       console.log(error);
@@ -60,25 +57,9 @@ export default function EditQuarto() {
     }
   }
 
-  async function getEnderecos() {
-    try {
-      const response = await api.get("enderecos");
-      setEnderecos(response.data);
-    } catch (error) {
-      console.log(error);
-      toast({
-        title: "Problema ao carregar endereços.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  }
+ 
 
-  useEffect(() => {
-    getItem();
-    getEnderecos();
-  }, []);
+
 
   const { errors } = formState;
   const editHotel = useCallback(async (data) => {
@@ -115,52 +96,30 @@ export default function EditQuarto() {
           onSubmit={handleSubmit(editHotel)}
         >
           <Heading fontSize="lg" fontWeight="normal">
-            Editar Quarto
+            Editar Area
           </Heading>
           <Divider my="6" borderColor="gray.700" />
           <VStack spacing="8">
             <SimpleGrid minChildWidth="240px" spacing="8" width="100%">
               <Input
                 name="nome"
-                label="Nome"
+                label="Are de conhecimento"
                 type="text"
                 error={errors.nome}
                 {...register("nome")}
                 value={nome}
                 onChange={(event) => setNome(event.target.value)}
               />
-              <Input
-                name="classificacao"
-                label="Classificação"
-                type="number"
-                error={errors.classificacao}
-                {...register("classificacao")}
-                value={classificacao}
-                onChange={(event) =>
-                  setClassificacao(Number(event.target.value))
-                }
-              />
+              
             </SimpleGrid>
 
             <SimpleGrid minChildWidth="240px" spacing="8" width="100%">
-              <Select
-                name="endereco"
-                id="endereco"
-                bgColor="white"
-                color="gray.900"
-                placeholder="Selecione o endereço"
-                error={errors.endereco?.id}
-                {...register("endereco.id")}
-              >
-                {enderecos.map((endereco) => (
-                  <option value={endereco.id}>{endereco.logradouro}</option>
-                ))}
-              </Select>
+              
             </SimpleGrid>
           </VStack>
           <Flex mt="8" justify="flex-end">
             <HStack spacing="4">
-              <Link href="/Livros">
+              <Link href="/areas_conhecimentos">
                 <Button as="a" colorScheme="whiteAlpha">
                   Cancelar
                 </Button>

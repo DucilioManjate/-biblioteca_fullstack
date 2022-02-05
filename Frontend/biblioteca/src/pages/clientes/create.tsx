@@ -6,6 +6,8 @@ import {
   Heading,
   HStack,
   SimpleGrid,
+  toast,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
@@ -18,25 +20,25 @@ import { SideBar } from "../../components/SideBar";
 import { useState } from "react";
 import { useCallback } from "react";
 import { api } from "../../services/api";
+import router, { useRouter } from "next/router";
 
 const CreateUserFormSchema = yup.object().shape({
-  nome: yup.string().required("Nome obrigatório"),
-  email: yup
-    .string()
-    .required("E-mail obrigatório")
-    .email("Digite um e-mail válido"),
-  cpf: yup.string().required("CPF obrigatório"),
-  nacionalidade: yup.string().required("Nacionalidade obrigatório"),
-  telefone: yup.number().required("Telefone obrigatório"),
+  documento: yup.string().required("obrigatório"),
+  telefone: yup.string().required("obrigatório"),
+  email: yup.string().required("obrigatório"),
+  cpf: yup.string().required("obrigatório"),
+  nomeCompleto: yup.string().required("obrigatório"),
+
 });
 
 export default function CreateHospede() {
-  const [nome, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const {push} = useRouter();
+  const toast = useToast();
+  const [documento, setDocumento] = useState("");
+  const [telefone, setTelefone] = useState("");
   const [cpf, setCpf] = useState("");
-  const [telefone, setTelefone] = useState(0);
-  const [data_nascimento, setDataNascimento] = useState("");
-  const [nacionalidade, setNacionalidade] = useState("");
+  const [email, setEmail] = useState("");
+  const [nomeCompleto, setNomeCompleto] = useState("");
 
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(CreateUserFormSchema),
@@ -44,11 +46,23 @@ export default function CreateHospede() {
 
   const { errors } = formState;
   
-  const createHospede = useCallback(async (data) => {
+  const createCliente = useCallback(async (data) => {
     try {
       await api.post("clientes", data);
+      toast({
+        title: "Cliente cadastrado.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });push("/clientes")
     } catch (error) {
-      console.log(error.error);
+     
+      toast({
+        title: "Problema ao cadastrar cliente.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   }, []);
 
@@ -69,28 +83,34 @@ export default function CreateHospede() {
             Criar cliente
           </Heading>
           <Divider my="6" borderColor="gray.700" />
-          <form onSubmit={handleSubmit(createHospede)}>
+          <form onSubmit={handleSubmit(createCliente)}>
             <VStack spacing="8">
               <SimpleGrid minChildWidth="240px" spacing="8" width="100%">
+               
                 <Input
-                  name="nome"
-                  label="Nome completo"
-                  error={errors.nome}
-                  {...register("nome")}
-                  value={nome}
-                  onChange={(event) => setName(event.target.value)}
+                  name="documento"
+                  label="Documento"
+                  error={errors.documento}
+                  {...register("documento")}
+                  value={documento}
+                  onChange={(event) => setDocumento(event.target.value)}
+                />
+                <Input
+                  name="telefone"
+                  label="Telefone"
+                  error={errors.telefone}
+                  {...register("telefone")}
+                  value={telefone}
+                  onChange={(event) => setTelefone(event.target.value)}
                 />
                 <Input
                   name="email"
-                  type="email"
-                  label="E-mail"
+                  label="Email"
                   error={errors.email}
                   {...register("email")}
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                 />
-              </SimpleGrid>
-              <SimpleGrid minChildWidth="240px" spacing="8" width="100%">
                 <Input
                   name="cpf"
                   label="CPF"
@@ -100,33 +120,14 @@ export default function CreateHospede() {
                   onChange={(event) => setCpf(event.target.value)}
                 />
                 <Input
-                  name="telefone"
-                  type="number"
-                  label="Telefone"
-                  error={errors.telefone}
-                  {...register("telefone")}
-                  value={telefone}
-                  onChange={(event) => setTelefone(Number(event.target.value))}
+                  name="nomeCompleto"
+                  label="NomeCompleto"
+                  error={errors.nomeCompleto}
+                  {...register("nomeCompleto")}
+                  value={nomeCompleto}
+                  onChange={(event) => setNomeCompleto(event.target.value)}
                 />
-              </SimpleGrid>
-              <SimpleGrid minChildWidth="240px" spacing="8" width="100%">
-                <Input
-                  name="data_nascimento"
-                  type="date"
-                  label="Data de nascimento"
-                  error={errors.data_nascimento}
-                  {...register("data_nascimento")}
-                  value={data_nascimento}
-                  onChange={(event) => setDataNascimento(event.target.value)}
-                />
-                <Input
-                  name="nacionalidade"
-                  label="Nacionalidade"
-                  error={errors.nacionalidade}
-                  {...register("nacionalidade")}
-                  value={nacionalidade}
-                  onChange={(event) => setNacionalidade(event.target.value)}
-                />
+              
               </SimpleGrid>
             </VStack>
             <Flex mt="8" justify="flex-end">

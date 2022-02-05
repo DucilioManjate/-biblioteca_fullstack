@@ -13,30 +13,32 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { RiAddLine, RiDeleteBinLine, RiPencilLine } from "react-icons/ri";
 import { Header } from "../../components/Header";
 
 import { SideBar } from "../../components/SideBar";
 import { api } from "../../services/api";
 
-export default function HotelList() {
+export default function AreaConhecimentoList() {
   const [data, setData] = useState([]);
-  const [hotelId, setHotelId] = useState(0);
+  const [categoriaId, setCategoriaId ] = useState();
 
-  async function deleteHotel(livro) {
-    setHotelId(livro.id);
-    console.log(hotelId);
+  
+  const deleteCategoria =  useCallback(async (id) => {
+    setCategoriaId(id)
+
     try {
-      await api.delete(`Livros/${hotelId}`);
+      console.log(categoriaId);
+     await api.delete(`categorias/${categoriaId}`);
       getItems();
     } catch (error) {
       console.log(error);
     }
-  }
+  },[categoriaId])
   async function getItems() {
     try {
-      const response = await api.get("Livros");
+      const response = await api.get("categorias");
       setData(response.data);
     } catch (error) {
       console.log(error);
@@ -54,9 +56,9 @@ export default function HotelList() {
         <Box flex="1" borderRadius={8} bg="gray.800" p="8">
           <Flex mb="8" justify="space-between" align="center">
             <Heading fontSize="lg" fontWeight="normal">
-              Livros
+              categorias
             </Heading>
-            <Link href="/Livros/create" passHref>
+            <Link href="/categorias/create" passHref>
               <Button
                 as="a"
                 size="sm"
@@ -73,28 +75,28 @@ export default function HotelList() {
             <Thead>
               <Tr>
                 <Th>Id</Th>
-                <Th>Hotel</Th>
-                <Th>Classifição</Th>
+                <Th>nome</Th>
+                <Th>Periodo</Th>
 
                 <Th width="8"></Th>
                 <Th width="8"></Th>
               </Tr>
             </Thead>
             <Tbody>
-            {data.map((livro) => (
-              <Tr key={livro.id}>
+            {data.map((categoria) => (
+              <Tr key={categoria.id}>
                 <Td>
-                  <Text>{livro.id}</Text>
+                  <Text>{categoria.id}</Text>
                 </Td>
                 <Td>
-                  <Text fontWeight="bold">{livro.nome}</Text>
+                  <Text fontWeight="bold">{categoria.nome}</Text>
                 </Td>
                 <Td>
-                  <Text>{livro.classificacao}</Text>
+                  <Text>{categoria.periodo}</Text>
                 </Td>
 
                 <Td>
-                  <Link href="/Livros/edit">
+                  <Link href="/categorias/edit">
                     <Button
                       as="a"
                       size="sm"
@@ -115,7 +117,9 @@ export default function HotelList() {
                     colorScheme="red"
                     leftIcon={<Icon as={RiDeleteBinLine} 
                     fontSize="16"
-                    onClick={() => deleteHotel(livro)}
+                    onClick={() => 
+                      deleteCategoria(categoria.id)}
+
                     />
                   }
                   >

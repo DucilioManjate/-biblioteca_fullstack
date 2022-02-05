@@ -1,47 +1,89 @@
 package com.example.biblioteca.auth.resource;
-
-import com.example.biblioteca.auth.UsuarioService;
-import com.example.biblioteca.auth.entity.Role;
+import com.example.biblioteca.auth.UsuarioImpService;
 import com.example.biblioteca.auth.entity.Usuario;
-import lombok.Data;
+import com.example.biblioteca.auth.response.UsuarioDto;
+import com.example.biblioteca.exceptions.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
-
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+
+@CrossOrigin("*")
 @RestController @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class UsuarioResource {
-//    private final UsuarioService usuarioService;
 
-//    @GetMapping("/usuarios")
-//    public ResponseEntity<List<Usuario>>getUsers(){
-//        return ResponseEntity.ok().body(usuarioService.getUsers());
-//    }
+    @Autowired
+    private UsuarioImpService service;
 
-//    @PostMapping("/usuario/salvo")
-//    public ResponseEntity<Usuario>saveUser(@RequestBody Usuario user){
-//        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/usuario/salvo").toUriString());
-//        return ResponseEntity.created(uri).body(usuarioService.saveUser(user));
-//    }
-//    @PostMapping("/role/salvo")
-//    public ResponseEntity<Role>saveUser(@RequestBody Role role){
-//        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/salvo").toUriString());
-//        return ResponseEntity.created(uri).body(usuarioService.saveRole(role));
-//    }
-//    @PostMapping("/role/AddUsuario")
-//    public ResponseEntity<?>addRoleToUsuario(@RequestBody RoleToUsuarioFrom form){
-//        usuarioService.addRoleToUser(form.getUsername(),form.getRoleName());
-//        return ResponseEntity.ok().build();
-//    }
-//}
 
-//@Data
-//class RoleToUsuarioFrom {
-//    private String username;
-//    private String roleName;
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable(value="id") Integer id) {
+
+        ModelMapper modelMapper = new ModelMapper();
+        Usuario usuario = service.findById(id);
+
+        if(usuario == null) {
+            throw new ObjectNotFoundException("Object "+Usuario.class.getName()+" not found! id "+id);
+        }
+
+        UsuarioDto usuarioDto = modelMapper.map(usuario,UsuarioDto.class);
+        return ResponseEntity.ok().body(usuarioDto);
+    }
+
+
+    @PostMapping()
+    public ResponseEntity<Void> insert(@RequestBody UsuarioDto dto){
+
+        ModelMapper modelMapper = new ModelMapper();
+        Usuario obj = modelMapper.map(dto,Usuario.class);
+
+        obj = this.service.insert(obj);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(obj.getId())
+                .toUri();
+        return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@RequestBody UsuarioDto dto, @PathVariable(value="id") Integer id){
+        ModelMapper modelMapper = new ModelMapper();
+        Usuario obj = modelMapper.map(dto,Usuario.class);
+        obj.setId(id);
+        obj = this.service.update(obj);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable(value="id") Integer id) {
+        service.deleteUsuario(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
+    }
+
+
+
 }

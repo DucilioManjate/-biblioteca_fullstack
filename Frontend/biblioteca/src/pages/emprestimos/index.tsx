@@ -39,7 +39,7 @@ export default function Dashboard() {
   const [clientes, setClientes] = useState([]);
   const [exemplares, setExemplares] = useState([]);
   const [data, setData] = useState([]);
-  const [reservaId, setReservaId] = useState(0);
+  const [emprestimoId, setEmprestimoId] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef();
@@ -66,18 +66,18 @@ export default function Dashboard() {
     }
   }
 
-  async function openDeleteReserva(exemplar) {
-    setReservaId(exemplar.id);
+  async function openDelete(emprestimo) {
+    setEmprestimoId(emprestimo.id);
     setIsOpen(true);
   }
 
-  async function deleteReserva() {
+  async function deleteEmprestimos() {
     try {
-      await api.delete(`emprestimos/${reservaId}`);
+      await api.delete(`emprestimos/${emprestimoId}`);
       setIsOpen(false);
       getItems();
       toast({
-        title: "Reserva apagado.",
+        title: "Emprestimo apagado.",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -85,7 +85,7 @@ export default function Dashboard() {
     } catch (error) {
       console.log(error);
       toast({
-        title: "Problema ao apagar exemplar.",
+        title: "Problema ao apagar .",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -154,7 +154,7 @@ export default function Dashboard() {
                   <Button ref={cancelRef} onClick={onClose}>
                     Cancelar
                   </Button>
-                  <Button colorScheme="red" onClick={deleteReserva} ml={3}>
+                  <Button colorScheme="red" onClick={deleteEmprestimos} ml={3}>
                     Apagar
                   </Button>
                 </AlertDialogFooter>
@@ -239,35 +239,33 @@ export default function Dashboard() {
                 <Th>Data de devoluição</Th>
                 <Th>Valor</Th>
                 <Th>Status</Th>
+                <Th>multa</Th>
                 <Th width="6"></Th>
                 <Th width="6"></Th>
               </Tr>
             </Thead>
             <Tbody>
-              {data.map((exemplar) => (
-                <Tr key={exemplar.id}>
-                  <Td>{exemplar.id}</Td>
-                  <Td>{exemplar.cliente.nome}</Td>
+              {data.map((emprestimo) => (
+                <Tr key={emprestimo.id}>
+                  <Td>{emprestimo.id}</Td>
+                  
                   <Td>
-                    <Text fontWeight="bold">{exemplar.exemplar.numero}</Text>
-                    <Text fontSize="sm" color="gray.300">
-                      {exemplar.exemplar.livro.nome}
-                    </Text>
+                    <Text>{emprestimo.dataEmprestimo}</Text>
+                  </Td>
+
+                  <Td>
+                    <Text>{emprestimo.dataDevolucao}</Text>
+                  </Td>
+                
+                  <Td>
+                    <Text>{emprestimo.valor}</Text>
+                  </Td>
+
+                  <Td>
+                    <Text>{emprestimo.status}</Text>
                   </Td>
                   <Td>
-                    <Text>{exemplar.preco_total}</Text>
-                  </Td>
-                  <Td>
-                    <Text>{exemplar.data_entrada}</Text>
-                  </Td>
-                  <Td>
-                    <Text>{exemplar.data_saida}</Text>
-                  </Td>
-                  <Td>
-                    <StatusExemplar value={exemplar.status} />
-                  </Td>
-                  <Td>
-                    <Link href={`/emprestimos/${exemplar.id}/edit`}>
+                    <Link href={`/emprestimos/${emprestimo.id}/edit`}>
                       <Button
                         as="a"
                         size="sm"
@@ -285,7 +283,7 @@ export default function Dashboard() {
                       size="sm"
                       fontSize="sm"
                       colorScheme="red"
-                      onClick={() => openDeleteReserva(exemplar)}
+                      onClick={() => openDelete(emprestimo)}
                       leftIcon={<Icon as={RiDeleteBinLine} fontSize="16" />}
                     >
                       Excluir

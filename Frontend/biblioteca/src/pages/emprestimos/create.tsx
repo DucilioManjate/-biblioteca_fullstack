@@ -21,8 +21,8 @@ import { SideBar } from "components/SideBar";
 import { api } from "services/api";
 
 const CreateQuartoFormSchema = yup.object().shape({
-  data_entrada: yup.date().required("Data de emprestimo do emprestimo é obrigatória"),
-  data_saida: yup.date().required("Data de saida é obrigatória"),
+  dataEmprestimo: yup.date().required("Data de emprestimo é obrigatória"),
+  dataDevoluicao: yup.date().required("Data de saida é obrigatória"),
   preco_total: yup.number().required("Valor é obrigatório"),
   cliente: yup.object().shape({
     id: yup.number().required("Cliente é obrigatório"),
@@ -37,12 +37,10 @@ const CreateQuartoFormSchema = yup.object().shape({
 
 export default function CreateEmprestimo() {
   const toast = useToast();
-  const [data_entrada, setData_entrada] = useState("");
-  const [data_saida, setData_saida] = useState("");
-  const [preco_total, setPreco_total] = useState(0);
-  const [clientes, setClientes] = useState([]);
-  const [exemplares, setExemplares] = useState([]);
-  const [usuarios, setUsuarios] = useState([]);
+  const [dataEmprestimo, setEmprestimo] = useState("");
+  const [dataDevoluicao, setDevoluicao] = useState("");
+  const [valor, setValor] = useState();
+  const [multa, setMulta] = useState();
   const { formState, register, handleSubmit } = useForm({
     resolver: yupResolver(CreateQuartoFormSchema),
   });
@@ -137,47 +135,47 @@ export default function CreateEmprestimo() {
           <VStack spacing="8">
             <SimpleGrid minChildWidth="240px" spacing="8" width="100%">
               <Input
-                name="data_entrada"
-                label="Data-Emprestimo"
+                name="dataEmprestimo"
+                label="Data do emprestimo"
                 type="date"
-                error={errors.data_entrada}
-                {...register("data_entrada")}
-                value={data_entrada}
-                onChange={(event) => setData_entrada(event.target.value)}
+                error={errors.dataEmprestimo}
+                {...register("dataEmprestimo")}
+                value={dataEmprestimo}
+                onChange={(event) => setEmprestimo(event.target.value)}
               />
               <Input
-                name="data_saida"
-                label="Data-Devoluição"
+                name="dataDevoluicao"
+                label="Data de evoluição"
                 type="date"
-                error={errors.data_saida}
-                {...register("data_saida")}
-                value={data_saida}
-                onChange={(event) => setData_saida(event.target.value)}
+                error={errors.dataDevoluicao}
+                {...register("dataDevoluicao")}
+                value={dataDevoluicao}
+                onChange={(event) => setDevoluicao(event.target.value)}
               />
               <Input
-                name="preco_total"
+                name="valor"
                 label="Valor do emprestimo"
                 type="number"
-                error={errors.preco_total}
-                {...register("preco_total")}
-                value={preco_total}
-                onChange={(event) => setPreco_total(Number(event.target.value))}
+                error={errors.valor}
+                {...register("valor")}
+                value={valor}
+                onChange={(event) => setValor(Number(event.target.value))}
               />
                <Input
-                name="preco_total"
-                label="multa"
+                name="mula"
+                label="Multa"
                 type="number"
                 error={errors.preco_total}
-                {...register("preco_total")}
-                value={preco_total}
-                onChange={(event) => setPreco_total(Number(event.target.value))}
+                {...register("multa")}
+                value={multa}
+                onChange={(event) => setMulta(Number(event.target.value))}
               />
                <Select
-
+                {...register("multa")}
                 label = "Status"
                 bgColor="white"
                 color="gray.900"
-                name="status"
+                name="Status"
                 placeholder="status"
               >
                 <option value="DISPONIVEL">Disponivel</option>

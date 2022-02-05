@@ -1,6 +1,7 @@
 package com.example.biblioteca.emprestimo.entity;
 
 import com.example.biblioteca.livro.entity.Livro;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

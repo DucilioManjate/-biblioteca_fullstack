@@ -21,7 +21,7 @@ import { SideBar } from "components/SideBar";
 import { useState, useEffect, useCallback } from "react";
 import { api } from "services/api";
 
-const EditQuartoFormSchema = yup.object().shape({
+const EditEditora = yup.object().shape({
   numero: yup.string().required("Número é obrigatório"),
   valor: yup.number().required("Preço é obrigatório"),
   quant_ocupacao: yup.number().required("Ocupação é obrigatório"),
@@ -40,12 +40,12 @@ export default function EditQuarto() {
   const [classificacao, setClassificacao] = useState(0);
   const [endereco, setEndereco] = useState();
   const { formState, register, handleSubmit } = useForm({
-    resolver: yupResolver(EditQuartoFormSchema),
+    resolver: yupResolver(EditEditora),
   });
 
   async function getItem() {
     try {
-      const response = await api.get(`Livros/${id}`);
+      const response = await api.get(`editoras/${id}`);
       setNome(response.data.nome);
       setClassificacao(response.data.classificacao);
       setEndereco(response.data.endereco.id);
@@ -81,11 +81,11 @@ export default function EditQuarto() {
   }, []);
 
   const { errors } = formState;
-  const editHotel = useCallback(async (data) => {
+  const EditEditora = useCallback(async (data) => {
     try {
-      await api.put(`Livros/${id}`, data);
+      await api.put(`livros/${id}`, data);
       toast({
-        title: "Hotel editado.",
+        title: "Editora editad.",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -93,7 +93,7 @@ export default function EditQuarto() {
     } catch (error) {
       console.log(error);
       toast({
-        title: "Problema ao editar livro.",
+        title: "Problema ao editar editora.",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -112,10 +112,10 @@ export default function EditQuarto() {
           borderRadius={8}
           bg="gray.800"
           p="8"
-          onSubmit={handleSubmit(editHotel)}
+          onSubmit={handleSubmit(EditEditora)}
         >
           <Heading fontSize="lg" fontWeight="normal">
-            Editar Quarto
+            Editar Editora
           </Heading>
           <Divider my="6" borderColor="gray.700" />
           <VStack spacing="8">
@@ -129,38 +129,14 @@ export default function EditQuarto() {
                 value={nome}
                 onChange={(event) => setNome(event.target.value)}
               />
-              <Input
-                name="classificacao"
-                label="Classificação"
-                type="number"
-                error={errors.classificacao}
-                {...register("classificacao")}
-                value={classificacao}
-                onChange={(event) =>
-                  setClassificacao(Number(event.target.value))
-                }
-              />
+              
             </SimpleGrid>
 
-            <SimpleGrid minChildWidth="240px" spacing="8" width="100%">
-              <Select
-                name="endereco"
-                id="endereco"
-                bgColor="white"
-                color="gray.900"
-                placeholder="Selecione o endereço"
-                error={errors.endereco?.id}
-                {...register("endereco.id")}
-              >
-                {enderecos.map((endereco) => (
-                  <option value={endereco.id}>{endereco.logradouro}</option>
-                ))}
-              </Select>
-            </SimpleGrid>
+            
           </VStack>
           <Flex mt="8" justify="flex-end">
             <HStack spacing="4">
-              <Link href="/Livros">
+              <Link href="/editoras">
                 <Button as="a" colorScheme="whiteAlpha">
                   Cancelar
                 </Button>
