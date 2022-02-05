@@ -3,16 +3,19 @@ package com.example.biblioteca.emprestimo.resource;
 import com.example.biblioteca.emprestimo.EmprestimoService;
 import com.example.biblioteca.emprestimo.entity.Emprestimo;
 import com.example.biblioteca.emprestimo.entity.Exemplar;
+import com.example.biblioteca.livro.entity.Autor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/emprestimos")
+@CrossOrigin
 public class EmprestimoResource {
 
     private final EmprestimoService emprestimoService;
@@ -30,6 +33,8 @@ public class EmprestimoResource {
     public ResponseEntity<Emprestimo> consulta(@PathVariable(name = "id") Integer id) {
         return ResponseEntity.ok((emprestimoService.buscarEmprestimoPorId(id)));
     }
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> apagar(@PathVariable(name = "id") Integer id) {
         emprestimoService.removerEmprestimo(id);

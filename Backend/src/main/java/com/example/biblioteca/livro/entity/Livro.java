@@ -1,5 +1,6 @@
 package com.example.biblioteca.livro.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -36,6 +37,7 @@ public class Livro {
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
+
     @ManyToOne
     @JoinColumn(name = "editora_id")
     private Editora editora;
@@ -47,6 +49,7 @@ public class Livro {
             joinColumns = @JoinColumn(name = "livro_id"), //mapeamendo da lista de area de conhecimentos
             inverseJoinColumns = @JoinColumn(name = "area_conhecimento_id") // referencias da propria classe que é o id
     )
+    @JsonIgnore
     private List<AreaConhecimento> areaConhecimentos = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.MERGE)
@@ -55,6 +58,7 @@ public class Livro {
             joinColumns = @JoinColumn(name = "livro_id"), //mapeamendo da lista de autor
             inverseJoinColumns = @JoinColumn(name = "autor_id") // referencias da propria classe que é o id
     )
+    @JsonIgnore
     private List<Autor> autores = new ArrayList<>();
 
 }

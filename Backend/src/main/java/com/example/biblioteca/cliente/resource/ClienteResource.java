@@ -19,6 +19,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin
 @RequestMapping("/clientes")
 public class ClienteResource {
 
@@ -78,4 +79,11 @@ public class ClienteResource {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleta(@PathVariable (value="id") Integer id) {
+        service.deletarCliente(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

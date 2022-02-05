@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin
 @RequestMapping("/enderecos")
 public class EnderecoResource {
 

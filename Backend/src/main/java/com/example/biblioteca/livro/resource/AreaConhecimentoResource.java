@@ -2,15 +2,18 @@ package com.example.biblioteca.livro.resource;
 
 import com.example.biblioteca.livro.AreaConhecimentoService;
 import com.example.biblioteca.livro.entity.AreaConhecimento;
+import com.example.biblioteca.livro.entity.Autor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin
 @RequestMapping("/areas-conhecimento")
 public class AreaConhecimentoResource {
 
@@ -25,6 +28,11 @@ public class AreaConhecimentoResource {
     @GetMapping
     public ResponseEntity<List<AreaConhecimento>> listar(){
         return ResponseEntity.ok(areaConhecimentoService.listarAreaConhecimenta());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AreaConhecimento>update(@Valid @RequestBody AreaConhecimento areaConhecimento) throws Exception {
+        return ResponseEntity.ok(areaConhecimentoService.atualizarAreaConhecimento(areaConhecimento));
     }
 
     @GetMapping("/{id}")

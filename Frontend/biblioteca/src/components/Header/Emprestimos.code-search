@@ -1,0 +1,55 @@
+# Query: Reservas
+# ContextLines: 1
+
+13 results - 4 files
+
+src\components\SideBar\index.tsx:
+  15          <NavSection title="GERAL">
+  16:           <NavLink href="/emprestimos" icon={RiCalendarCheckLine}>Emprestimos</NavLink>
+  17            <NavLink href="/hospedes" icon={RiContactsLine}>Hospedes</NavLink>
+
+src\pages\emprestimos\create.tsx:
+   97      try {
+   98:       await api.post("emprestimos", data);
+   99        toast({
+
+  210              <HStack spacing="4">
+  211:               <Link href="/emprestimos">
+  212                  <Button as="a" colorScheme="whiteAlpha">
+
+src\pages\emprestimos\index.tsx:
+   51          response = await api.get(
+   52:           `/emprestimos?data_entrada=${data_entrada}&data_saida=${data_saida}&estado=${estado}&hospede_id=${hospede_id}&quarto_id=${quarto_id}`
+   53          );
+   54        } else {
+   55:         response = await api.get("emprestimos");
+   56        }
+
+   60        toast({
+   61:         title: "Problema ao carregar emprestimos.",
+   62          status: "error",
+
+   75      try {
+   76:       await api.delete(`emprestimos/${reservaId}`);
+   77        setIsOpen(false);
+
+  167              </Heading>
+  168:             <Link href="/emprestimos/create" passHref>
+  169                <Button
+
+  272                    <Td>
+  273:                     <Link href={`/emprestimos/${reserva.id}/edit`}>
+  274                        <Button
+
+src\pages\emprestimos\[id]\edit.tsx:
+   42      try {
+   43:       const response = await api.get(`emprestimos/${id}`);
+   44        setData_entrada(response.data.data_entrada);
+
+   64      try {
+   65:       await api.put(`emprestimos/${id}`, data);
+   66        toast({
+
+  132              <HStack spacing="4">
+  133:               <Link href="/emprestimos">
+  134                  <Button as="a" colorScheme="whiteAlpha">

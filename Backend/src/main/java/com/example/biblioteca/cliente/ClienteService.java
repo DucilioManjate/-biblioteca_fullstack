@@ -3,6 +3,7 @@ package com.example.biblioteca.cliente;
 import com.example.biblioteca.cliente.entity.Cliente;
 import com.example.biblioteca.cliente.repository.ClienteRepository;
 import com.example.biblioteca.exceptions.BusinessRuleException;
+import com.example.biblioteca.exceptions.ObjectNotFoundException;
 import com.example.biblioteca.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,4 +56,12 @@ public class ClienteService{
         update.setId(cliente.getId());
         return clienteRepository.save(update);
     }
+
+    public void deletarCliente(Integer id) {
+        if (this.buscarClientId(id) == null) {
+            throw new ObjectNotFoundException("Obeject"+Cliente.class.getName()+"no found! ID" +id);
+        }
+        clienteRepository.deleteById(id);
+    }
+
 }

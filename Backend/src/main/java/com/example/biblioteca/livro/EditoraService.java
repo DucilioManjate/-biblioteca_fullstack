@@ -1,6 +1,7 @@
 package com.example.biblioteca.livro;
 
 import com.example.biblioteca.exceptions.ResourceNotFoundException;
+import com.example.biblioteca.livro.entity.Autor;
 import com.example.biblioteca.livro.entity.Categoria;
 import com.example.biblioteca.livro.entity.Editora;
 import com.example.biblioteca.livro.repository.CategoriaRepository;
@@ -28,6 +29,12 @@ public class EditoraService {
             throw new ResourceNotFoundException("Editora não encontrada");
         }
         return editora.get();
+    }
+    public Editora atualizarEditora(Editora editora) throws Exception{
+        if(!editoraRepository.existsById(editora.getId())) {
+            throw new Exception("Editora não encontrado!");
+        }
+        return editoraRepository.save(editora);
     }
     public void remover(Integer id) {
         consultar(id);

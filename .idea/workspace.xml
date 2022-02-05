@@ -5,8 +5,50 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1b094181-2844-4526-9d13-f398d3e30d29" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/EER.mwb" beforeDir="false" afterPath="$PROJECT_DIR$/EER.mwb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EER.mwb.bak" beforeDir="false" afterPath="$PROJECT_DIR$/EER.mwb.bak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/com/example/biblioteca/auth/entity/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/com/example/biblioteca/auth/entity/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/.eslintrc.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/jsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/biblioteca/next.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/biblioteca/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/public/vercel.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/components/button/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/components/card/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/components/drawer/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/components/header/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/components/icon/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/components/image/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/components/input/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/_app.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/api/hello.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/cliente/create.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/cliente/edit.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/cliente/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/emprestimo/create.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/emprestimo/edit.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/emprestimo/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/endereco/cidade/create.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/endereco/cidade/edit.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/endereco/cidade/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/endereco/create.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/endereco/edit.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/endereco/estado/create.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/endereco/estado/edit.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/endereco/estado/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/endereco/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/exemplar/create.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/exemplar/edit.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/exemplar/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/exemplares/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/livro/create.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/livro/edit.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/pages/livro/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/styles/Home.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/biblioteca/src/styles/globals.css" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,8 +89,9 @@
   </component>
   <component name="RunManager">
     <configuration name="BibliotecaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="Biblioteca" />
+      <module name="Recuperação" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.biblioteca.BibliotecaApplication" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -63,6 +106,8 @@
       <option name="presentableId" value="Default" />
       <updated>1642447556735</updated>
       <workItem from="1642447560392" duration="1613000" />
+      <workItem from="1643668384290" duration="910000" />
+      <workItem from="1643674735207" duration="148000" />
     </task>
     <servers />
   </component>
